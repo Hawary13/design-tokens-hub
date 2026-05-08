@@ -24,14 +24,17 @@ export const Route = createFileRoute("/")({
 
 /* ────────────────────────────────────────────────────────────────────── */
 
-function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children: React.ReactNode }) {
+function Section({ id, eyebrow, title, titleAr, children }: { id: string; eyebrow: string; title: string; titleAr?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="border-t border-border py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <header className="mb-10 grid gap-6 md:grid-cols-[280px_1fr] md:items-end">
+        <header className="mb-10 grid gap-6 md:grid-cols-[320px_1fr] md:items-end">
           <div>
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">{eyebrow}</div>
             <h2 className="mt-3 font-display text-4xl font-light text-foreground md:text-5xl">{title}</h2>
+            {titleAr && (
+              <div dir="rtl" className="mt-2 font-arabic text-2xl text-muted-foreground">{titleAr}</div>
+            )}
           </div>
           <div className="h-px w-full bg-border md:mb-3" />
         </header>
@@ -85,6 +88,7 @@ function DesignSystem() {
             <a href="#color" className="hover:text-foreground">Color</a>
             <a href="#type" className="hover:text-foreground">Type</a>
             <a href="#components" className="hover:text-foreground">Components</a>
+            <a href="#bilingual" className="hover:text-foreground">EN · ع</a>
             <a href="#patterns" className="hover:text-foreground">Patterns</a>
           </nav>
           <button className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background hover:opacity-90">
@@ -99,45 +103,59 @@ function DesignSystem() {
         <div className="absolute -right-32 top-20 h-[420px] w-[420px] rounded-full bg-accent/30 blur-3xl" />
         <div className="absolute -left-32 bottom-0 h-[380px] w-[380px] rounded-full bg-primary/20 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-8 py-24 md:py-32">
-          <div className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            بيروني · A MENA-centric behavioral science platform
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            <span>A MENA-centric behavioral science platform</span>
+            <span className="opacity-40">·</span>
+            <span dir="rtl" className="font-arabic text-sm normal-case tracking-normal">منصة لعلوم السلوك في الشرق الأوسط</span>
           </div>
           <h1 className="mt-6 max-w-4xl font-display text-6xl font-light leading-[0.95] tracking-tight text-foreground md:text-8xl">
             The grammar of <em className="text-accent not-italic">behavioral</em> science.
           </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A design system for researchers, educators, and clinicians. Built on scholarly typography,
-            ink-on-paper restraint, and three persona-driven accents.
-          </p>
+          <div dir="rtl" className="mt-4 max-w-3xl font-arabic text-3xl font-normal leading-[1.4] text-foreground md:text-5xl">
+            <span className="text-muted-foreground">قواعدُ </span>
+            <em className="not-italic text-accent">علمِ السلوك</em>
+            <span className="text-muted-foreground">.</span>
+          </div>
+          <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              A design system for researchers, educators, and clinicians. Built on scholarly
+              typography, ink-on-paper restraint, and three persona-driven accents.
+            </p>
+            <p dir="rtl" className="font-arabic text-lg leading-loose text-muted-foreground">
+              نظامُ تصميمٍ للباحثين والمعلّمين والأطبّاء. مبنيٌّ على طباعةٍ علميّةٍ وثلاثةِ ألوانٍ مميّزة لكلّ تخصّص.
+            </p>
+          </div>
           <div className="mt-10 flex flex-wrap gap-3">
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">v1.0.0</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">142 tokens</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">3 personas</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">light · dark</span>
+            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">EN · ع</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">LTR · RTL</span>
           </div>
         </div>
       </section>
 
       {/* ── Foundations ── */}
-      <Section id="foundations" eyebrow="01 · Foundations" title="Principles">
+      <Section id="foundations" eyebrow="01 · Foundations" title="Principles" titleAr="المبادئ">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { icon: Brain, title: "Cognitive clarity", body: "Every surface earns its weight. Density serves the work, not the brand." },
-            { icon: Globe, title: "Bilingual by default", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully." },
-            { icon: Layers, title: "Persona-aware", body: "Research, Education, Clinical — three accents, one system." },
+            { icon: Brain, title: "Cognitive clarity", titleAr: "وضوحٌ معرفي", body: "Every surface earns its weight. Density serves the work, not the brand.", bodyAr: "كلُّ عنصرٍ يستحقُّ مكانه. الكثافةُ تخدمُ العمل، لا العلامة." },
+            { icon: Globe, title: "Bilingual by default", titleAr: "ثنائيُّ اللغة افتراضيًا", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully.", bodyAr: "اللاتينيّةُ والعربيّةُ على إيقاعٍ واحد. ينعكسُ التخطيطُ بأناقة." },
+            { icon: Layers, title: "Persona-aware", titleAr: "مدركٌ للأدوار", body: "Research, Education, Clinical — three accents, one system.", bodyAr: "بحثٌ، تعليمٌ، عيادةٌ — ثلاثةُ ألوانٍ في نظامٍ واحد." },
           ].map((p) => (
             <div key={p.title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <p.icon className="text-accent" size={22} />
               <h3 className="mt-4 font-display text-2xl font-medium">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+              <div dir="rtl" className="font-arabic text-xl text-foreground/80">{p.titleAr}</div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+              <p dir="rtl" className="mt-2 font-arabic text-base leading-loose text-muted-foreground">{p.bodyAr}</p>
             </div>
           ))}
         </div>
       </Section>
 
       {/* ── Color ── */}
-      <Section id="color" eyebrow="02 · Color" title="Tokens & palette">
+      <Section id="color" eyebrow="02 · Color" title="Tokens & palette" titleAr="الألوان">
         <div className="space-y-12">
           <div>
             <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Ink — primary neutral (scholarly indigo)</h3>
@@ -182,19 +200,21 @@ function DesignSystem() {
             <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Persona accents</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                { key: "research", label: "Research", icon: Beaker, copy: "Cool indigo. Empirical. Data-forward." },
-                { key: "education", label: "Education", icon: GraduationCap, copy: "Warm saffron. Inviting. Classroom-ready." },
-                { key: "clinical", label: "Clinical", icon: Stethoscope, copy: "Calm teal. Trustworthy. Care-first." },
+                { key: "research", label: "Research", labelAr: "بحث", icon: Beaker, copy: "Cool indigo. Empirical. Data-forward.", copyAr: "نيليٌّ هادئ. تجريبيٌّ. مُوجَّهٌ بالبيانات." },
+                { key: "education", label: "Education", labelAr: "تعليم", icon: GraduationCap, copy: "Warm saffron. Inviting. Classroom-ready.", copyAr: "زعفرانيٌّ دافئ. مُرحِّب. جاهزٌ للفصل." },
+                { key: "clinical", label: "Clinical", labelAr: "عيادة", icon: Stethoscope, copy: "Calm teal. Trustworthy. Care-first.", copyAr: "فيروزيٌّ ساكن. موثوق. الرعايةُ أوّلًا." },
               ].map((p) => (
                 <div key={p.key} className="overflow-hidden rounded-2xl border border-border bg-card">
-                  <div className="flex h-32 items-end p-5" style={{ background: `var(--${p.key})`, color: `var(--${p.key}-foreground)` }}>
+                  <div className="flex h-32 items-end justify-between p-5" style={{ background: `var(--${p.key})`, color: `var(--${p.key}-foreground)` }}>
                     <div>
                       <p.icon size={22} />
                       <div className="mt-3 font-display text-2xl">{p.label}</div>
                     </div>
+                    <div dir="rtl" className="font-arabic text-2xl opacity-90">{p.labelAr}</div>
                   </div>
                   <div className="p-5">
                     <p className="text-sm text-muted-foreground">{p.copy}</p>
+                    <p dir="rtl" className="mt-1 font-arabic text-base leading-loose text-muted-foreground">{p.copyAr}</p>
                     <div className="mt-3 font-mono text-[11px] text-muted-foreground">--{p.key} / --{p.key}-foreground</div>
                   </div>
                 </div>
@@ -205,7 +225,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Typography ── */}
-      <Section id="type" eyebrow="03 · Typography" title="Type system">
+      <Section id="type" eyebrow="03 · Typography" title="Type system" titleAr="نظام الطباعة">
         <div className="grid gap-12 md:grid-cols-[1fr_320px]">
           <div className="space-y-8">
             <div className="border-b border-border pb-6">
@@ -263,7 +283,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Spacing / Radius / Shadow ── */}
-      <Section id="primitives" eyebrow="04 · Primitives" title="Spacing, radius, elevation">
+      <Section id="primitives" eyebrow="04 · Primitives" title="Spacing, radius, elevation" titleAr="المسافات والحواف">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="rounded-2xl border border-border bg-card p-6">
             <h3 className="font-display text-2xl">Spacing</h3>
@@ -307,7 +327,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Iconography ── */}
-      <Section id="icons" eyebrow="05 · Iconography" title="Lucide · 1.75 stroke">
+      <Section id="icons" eyebrow="05 · Iconography" title="Lucide · 1.75 stroke" titleAr="الأيقونات">
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="grid grid-cols-6 gap-4 md:grid-cols-12">
             {[
@@ -326,7 +346,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Components ── */}
-      <Section id="components" eyebrow="06 · Components" title="Buttons, inputs, badges, alerts">
+      <Section id="components" eyebrow="06 · Components" title="Buttons, inputs, badges, alerts" titleAr="المكوّنات">
         {/* Buttons */}
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Buttons</div>
@@ -427,8 +447,79 @@ function DesignSystem() {
         </div>
       </Section>
 
+      {/* ── Bilingual ── */}
+      <Section id="bilingual" eyebrow="07 · Bilingual" title="English & Arabic" titleAr="الإنجليزيّة والعربيّة">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-border bg-card p-6">
+            <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Type pairing</div>
+            <div className="mt-5 space-y-5">
+              {[
+                { en: "Working Memory", ar: "الذاكرة العاملة" },
+                { en: "Reaction Time", ar: "زمن الاستجابة" },
+                { en: "Patient Assessment", ar: "تقييم المريض" },
+                { en: "Classroom Mode", ar: "وضع الفصل" },
+              ].map((r) => (
+                <div key={r.en} className="grid grid-cols-2 items-baseline gap-6 border-b border-border pb-4 last:border-0">
+                  <div className="font-display text-3xl font-light">{r.en}</div>
+                  <div dir="rtl" className="font-arabic text-3xl">{r.ar}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              Fraunces · Inter ⇄ Noto Naskh Arabic
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Numerals</div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-xs text-muted-foreground">Latin · default</div>
+                  <div className="mt-1 font-display text-4xl">1,284 · 92.4%</div>
+                </div>
+                <div dir="rtl">
+                  <div className="font-arabic text-xs text-muted-foreground">عربيّة-هنديّة</div>
+                  <div className="mt-1 font-arabic text-4xl">١٬٢٨٤ · ٪٩٢٫٤</div>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Directionality · LTR ⇄ RTL</div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="rounded-lg border border-border bg-surface p-4">
+                  <div className="flex items-center justify-between">
+                    <Beaker size={16} className="text-research" />
+                    <ChevronRight size={14} className="text-muted-foreground" />
+                  </div>
+                  <div className="mt-3 font-display text-base">N-Back Task</div>
+                  <div className="mt-1 text-xs text-muted-foreground">342 participants</div>
+                </div>
+                <div dir="rtl" className="rounded-lg border border-border bg-surface p-4">
+                  <div className="flex items-center justify-between">
+                    <Beaker size={16} className="text-research" />
+                    <ChevronRight size={14} className="rotate-180 text-muted-foreground" />
+                  </div>
+                  <div className="mt-3 font-arabic text-lg">مهمّة N-Back</div>
+                  <div className="mt-1 font-arabic text-xs text-muted-foreground">٣٤٢ مشاركًا</div>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Bilingual button</div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"><Play size={14}/> Start study</button>
+                <button dir="rtl" className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-arabic text-sm font-medium text-primary-foreground"><Play size={14}/> ابدأ الدراسة</button>
+                <button className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-card px-4 py-2.5 text-sm font-medium"><Download size={14}/> Export</button>
+                <button dir="rtl" className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-card px-4 py-2.5 font-arabic text-sm font-medium"><Download size={14}/> تصدير</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* ── Patterns ── */}
-      <Section id="patterns" eyebrow="07 · Patterns" title="In context">
+      <Section id="patterns" eyebrow="08 · Patterns" title="In context" titleAr="في السياق">
         <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-lg">
           <div className="grid md:grid-cols-[260px_1fr]">
             {/* Sidebar */}
@@ -498,6 +589,83 @@ function DesignSystem() {
                         <td className="px-4 py-3"><Badge tone={r.p as any}>{r.p}</Badge></td>
                         <td className="px-4 py-3 text-muted-foreground">{r.s}</td>
                         <td className="px-4 py-3 text-right font-mono">{r.v}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RTL mirror */}
+        <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-surface shadow-lg" dir="rtl">
+          <div className="grid md:grid-cols-[260px_1fr]">
+            <aside className="border-l border-border bg-surface-elevated p-5">
+              <div className="flex items-center gap-2">
+                <Logo small /> <span className="font-arabic text-xl">بيروني</span>
+              </div>
+              <div className="mt-6 space-y-1 text-sm">
+                {[
+                  { i: BarChart3, l: "نظرة عامّة", a: true },
+                  { i: Beaker, l: "التجارب" },
+                  { i: BookOpen, l: "المتجر" },
+                  { i: Users, l: "المشاركون" },
+                  { i: Database, l: "البيانات" },
+                  { i: Settings, l: "الإعدادات" },
+                ].map((it) => (
+                  <a key={it.l} className={`flex items-center gap-2.5 rounded-lg px-3 py-2 font-arabic text-base ${it.a ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+                    <it.i size={16} /> {it.l}
+                  </a>
+                ))}
+              </div>
+              <div className="mt-8 rounded-xl bg-gradient-to-bl from-accent/30 to-saffron-300/20 p-4">
+                <Sparkles size={16} className="text-saffron-700" />
+                <div className="mt-2 font-arabic text-base">ترقية إلى العيادة</div>
+                <div className="font-arabic text-xs text-muted-foreground">مساحة عمل متوافقة · إدارة المرضى</div>
+              </div>
+            </aside>
+
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">مساحة العمل · د. أريس ثورن</div>
+                  <h3 className="mt-1 font-arabic text-3xl">نظرة عامّة على الدراسات</h3>
+                </div>
+                <div className="flex gap-2">
+                  <button className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground"><Bell size={15}/></button>
+                  <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 font-arabic text-sm font-medium text-primary-foreground"><Plus size={14}/> جديد</button>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3 md:grid-cols-3">
+                <StatAr label="الدراسات النشطة" value="١٤" delta="+٣" />
+                <StatAr label="المشاركون" value="١٬٢٨٤" delta="+١٦٢" />
+                <StatAr label="متوسّط الإكمال" value="٪٩٢٫٤" delta="+١٫٨٪" tone="success" />
+              </div>
+
+              <div className="mt-6 overflow-hidden rounded-xl border border-border">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/60 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الدراسة</th>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">التخصّص</th>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الحالة</th>
+                      <th className="px-4 py-2.5 text-left font-arabic text-xs">العدد</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { n: "N-Back · سعة الذاكرة", p: "research", pAr: "بحث", s: "نشط", v: "٣٤٢" },
+                      { n: "Stroop · فصل ٢", p: "education", pAr: "تعليم", s: "مسوّدة", v: "—" },
+                      { n: "PHQ-9 · مجموعة أ", p: "clinical", pAr: "عيادة", s: "نشط", v: "١١٨" },
+                      { n: "البحث البصري · تجريبي", p: "research", pAr: "بحث", s: "متوقّف", v: "٢٧" },
+                    ].map((r) => (
+                      <tr key={r.n} className="border-t border-border">
+                        <td className="px-4 py-3 font-arabic text-base font-medium text-foreground">{r.n}</td>
+                        <td className="px-4 py-3"><Badge tone={r.p as any}>{r.pAr}</Badge></td>
+                        <td className="px-4 py-3 font-arabic text-muted-foreground">{r.s}</td>
+                        <td className="px-4 py-3 text-left font-arabic">{r.v}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -603,6 +771,18 @@ function Stat({ label, value, delta, tone }: { label: string; value: string; del
       <div className="mt-2 flex items-baseline justify-between">
         <div className="font-display text-3xl font-medium">{value}</div>
         <div className={`font-mono text-xs ${tone === "success" ? "text-success" : "text-muted-foreground"}`}>{delta}</div>
+      </div>
+    </div>
+  );
+}
+
+function StatAr({ label, value, delta, tone }: { label: string; value: string; delta: string; tone?: "success" }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <div className="font-arabic text-xs text-muted-foreground">{label}</div>
+      <div className="mt-2 flex items-baseline justify-between">
+        <div className="font-arabic text-3xl font-medium">{value}</div>
+        <div className={`font-arabic text-xs ${tone === "success" ? "text-success" : "text-muted-foreground"}`}>{delta}</div>
       </div>
     </div>
   );
