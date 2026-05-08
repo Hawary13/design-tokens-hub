@@ -239,68 +239,92 @@ function Main({ rtl, arabicNumerals }: { rtl: boolean; arabicNumerals: boolean }
         </div>
       </div>
 
-      {/* Section 01 — Color */}
-      <Sect n="01" name={rtl ? "الألوان" : "Color"} kicker={rtl ? "أساس بصري" : "Foundation"}
-        intro={rtl ? "قاعدةٌ من الصخر الرمادي، ولكنةٌ ذهبيّةٌ صحراويّةٌ، وأبيضُ سريريٌّ نقيّ." : "A slate foundation, a desert-gold accent, and a clinical-white wash."}>
+      {/* Section 01 — Color: Clinical Oasis */}
+      <Sect n="01" name={rtl ? "واحة سريريّة" : "Clinical Oasis"} kicker={rtl ? "لوحة الألوان" : "Color palette"}
+        intro={rtl ? "نِيليُّ الواحة، ذهبيُّ الكثبان، نعناعُ المغرب، تيراكوتا، أنثراسيت، ورَقُّ البَردي." : "Oasis Indigo, Dune Gold, Maghreb Mint, Terracotta, Anthracite, and Parchment."}>
         <div className="grid gap-3 md:grid-cols-12">
-          {/* Big slate stack */}
-          <div className="md:col-span-7">
-            <div className="grad-card overflow-hidden rounded-xl border border-border">
-              <div className="grid grid-cols-5">
+          {/* The six named tokens */}
+          <div className="md:col-span-12">
+            <div className="precision-card overflow-hidden">
+              <div className="grid grid-cols-2 md:grid-cols-6">
                 {[
-                  { v: "0.205", l: "ink" },
-                  { v: "0.225", l: "primary" },
-                  { v: "0.520", l: "muted-fg" },
-                  { v: "0.870", l: "border+" },
-                  { v: "0.985", l: "canvas" },
-                ].map((s, i) => (
-                  <div key={s.l} className={`flex h-32 flex-col justify-between p-3 ${i === 4 ? "" : ""}`}
-                       style={{ background: `oklch(${s.v} 0.012 252)`, color: parseFloat(s.v) < 0.6 ? "#fff" : "var(--color-foreground)" }}>
-                    <span className="font-mono text-[10px] uppercase tracking-wider opacity-80">{s.l}</span>
-                    <span className="font-mono text-[10px] num-tab opacity-70">L {s.v}</span>
+                  { name: "Oasis Indigo",  hex: "#1A2B47", token: "--primary",     fg: "#F9FAFB", role: rtl ? "أساسي"   : "Primary" },
+                  { name: "Dune Gold",     hex: "#C5A059", token: "--accent",      fg: "#1A2B47", role: rtl ? "حركي"    : "CTA · Active" },
+                  { name: "Maghreb Mint",  hex: "#26DE81", token: "--success",     fg: "#1A2B47", role: rtl ? "نجاح"    : "Success" },
+                  { name: "Terracotta",    hex: "#E67E22", token: "--destructive", fg: "#1A2B47", role: rtl ? "تنبيه"   : "Alert" },
+                  { name: "Anthracite",    hex: "#121417", token: "--canvas (dark)", fg: "#F9FAFB", role: rtl ? "وضع المختبر" : "Lab Mode" },
+                  { name: "Parchment",     hex: "#F9FAFB", token: "--canvas",      fg: "#1A2B47", role: rtl ? "لوحة"    : "Surface" },
+                ].map((s) => (
+                  <div key={s.name} className="group relative flex h-44 flex-col justify-between border-b border-e border-border p-3 calm hover:saturate-[1.05]"
+                       style={{ background: s.hex, color: s.fg }}>
+                    <div className="flex items-start justify-between">
+                      <span className="font-mono text-[10px] uppercase tracking-wider opacity-80">{s.role}</span>
+                      <span className="font-mono text-[10px] num-tab opacity-70">{s.hex}</span>
+                    </div>
+                    <div>
+                      <div className="font-display text-[15px] font-semibold leading-tight">{s.name}</div>
+                      <div className="mt-0.5 font-mono text-[10px] opacity-75">{s.token}</div>
+                    </div>
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-between border-t border-border px-3 py-2">
-                <div className="text-[12px]"><span className="font-medium">Slate</span> <span className="text-muted-foreground">· primary neutral</span></div>
-                <span className="font-mono text-[11px] text-muted-foreground">oklch(L .012 252)</span>
+              <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-[12px]">
+                <div><span className="font-medium">Clinical Oasis</span> <span className="text-muted-foreground">· Desert High-Tech base</span></div>
+                <span className="font-mono text-[10px] text-muted-foreground">WCAG AA · text on white uses Oasis Indigo</span>
               </div>
             </div>
           </div>
 
-          {/* Gold accent */}
-          <div className="md:col-span-5">
-            <div className="grad-gold relative h-[164px] overflow-hidden rounded-xl border border-border p-4">
-              <div className="absolute inset-0 grid-fine opacity-50" />
-              <div className="relative flex h-full flex-col justify-between">
-                <div className="flex items-center justify-between">
-                  <span className="rounded bg-foreground/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider">Accent · single</span>
-                  <Sparkles size={16} />
-                </div>
+          {/* Diverging palette for data viz */}
+          <div className="md:col-span-7">
+            <div className="precision-card p-5">
+              <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-display text-3xl font-semibold tracking-tight">Sand-gold</div>
-                  <div className="font-mono text-[11px] text-foreground/70">--gold · oklch(.760 .105 78)</div>
+                  <div className="font-display text-[15px] font-semibold">{rtl ? "تدرّجٌ متباين للبيانات" : "Diverging palette · data viz"}</div>
+                  <div className="mt-0.5 text-[12px] text-muted-foreground">{rtl ? "أداء عالٍ → أساس → استثناء" : "High-performance → Baseline → Outlier"}</div>
                 </div>
+                <span className="rounded-md bg-muted px-2 py-0.5 font-mono text-[10px] text-muted-foreground">3-stop</span>
+              </div>
+              <div className="mt-4 h-7 w-full rounded-md"
+                   style={{ background: "linear-gradient(90deg, #1A2B47 0%, #C5A059 50%, #E67E22 100%)" }} />
+              <div className="mt-2 grid grid-cols-3 text-[11px] font-mono text-muted-foreground">
+                <span>#1A2B47 · High</span>
+                <span className="text-center">#C5A059 · Baseline</span>
+                <span className="text-end">#E67E22 · Outlier</span>
+              </div>
+              {/* Mini bars demo */}
+              <div className="mt-5 flex h-24 items-end gap-1.5">
+                {[20,34,46,58,72,84,96,88,72,58,46,34,22,14].map((h, i) => {
+                  const c = i < 5 ? "#1A2B47" : i < 10 ? "#C5A059" : "#E67E22";
+                  return <div key={i} className="flex-1 rounded-sm calm" style={{ height: `${h}%`, background: c }} />;
+                })}
               </div>
             </div>
-            <div className="mt-3 grid grid-cols-3 gap-3">
+          </div>
+
+          {/* Status cards */}
+          <div className="md:col-span-5">
+            <div className="grid grid-cols-2 gap-3">
               {[
-                { l: rtl ? "نجاح" : "Success", t: "success" },
-                { l: rtl ? "تنبيه" : "Warning", t: "warning" },
-                { l: rtl ? "خطأ" : "Error", t: "destructive" },
+                { l: rtl ? "نجاح / نموّ" : "Success / Growth", t: "success",     hex: "#26DE81", note: rtl ? "نعناع المغرب" : "Maghreb Mint" },
+                { l: rtl ? "تنبيه" : "Alert / Soft warn",    t: "destructive", hex: "#E67E22", note: rtl ? "تيراكوتا"      : "Terracotta" },
+                { l: rtl ? "أساسي" : "Authoritative",        t: "primary",     hex: "#1A2B47", note: rtl ? "نيلي الواحة"  : "Oasis Indigo" },
+                { l: rtl ? "متميّز" : "Premium accent",      t: "accent",      hex: "#C5A059", note: rtl ? "ذهبي الكثبان" : "Dune Gold" },
               ].map((s) => (
-                <div key={s.l} className="grad-card rounded-lg border border-border p-2 tactile">
-                  <div className="h-7 rounded" style={{ background: `var(--color-${s.t})` }} />
-                  <div className="mt-1.5 flex items-center justify-between">
-                    <span className="text-[12px]">{s.l}</span>
-                    <span className="font-mono text-[10px] text-muted-foreground">--{s.t}</span>
+                <div key={s.l} className="precision-card p-3 tactile">
+                  <div className="h-9 rounded-md" style={{ background: s.hex }} />
+                  <div className="mt-2 flex items-baseline justify-between">
+                    <span className="text-[12px] font-medium">{s.l}</span>
+                    <span className="font-mono text-[10px] num-tab text-muted-foreground">{s.hex}</span>
                   </div>
+                  <div className="text-[11px] text-muted-foreground">{s.note}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Personae */}
+
           <div className="md:col-span-12">
             <div className="grid gap-3 md:grid-cols-3">
               {[

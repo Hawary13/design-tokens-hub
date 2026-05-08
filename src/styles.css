@@ -52,95 +52,117 @@
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", serif;
 
-  --shadow-xs: 0 1px 0 0 oklch(0.20 0.02 250 / 0.04);
-  --shadow-sm: 0 1px 2px -1px oklch(0.20 0.02 250 / 0.08), 0 1px 0 0 oklch(0.20 0.02 250 / 0.04);
-  --shadow-md: 0 8px 24px -8px oklch(0.20 0.02 250 / 0.12), 0 2px 6px -2px oklch(0.20 0.02 250 / 0.06);
-  --shadow-lg: 0 24px 48px -16px oklch(0.20 0.02 250 / 0.18);
-  --shadow-glow: 0 0 0 1px oklch(0.78 0.10 78 / 0.35), 0 6px 28px -8px oklch(0.78 0.10 78 / 0.30);
+  /* Calm Motion */
+  --ease-calm: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-calm: 240ms;
+
+  /* Ambient shadow per spec */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.10), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.10), 0 8px 10px -6px rgb(0 0 0 / 0.10);
+  --shadow-glow: 0 0 0 3px color-mix(in srgb, #C5A059 28%, transparent);
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.75rem; /* 12px per "Precision Card" spec */
 
-  /* Desert High-Tech — slate foundation, sand-gold signal, clinical white */
-  --canvas:    oklch(0.985 0.003 250);   /* clinical white wash */
-  --surface:   oklch(1     0     0);     /* card surface */
-  --surface-2: oklch(0.975 0.004 250);   /* secondary surface (sidebar) */
-  --elevated:  oklch(1     0     0);
+  /* ── Clinical Oasis palette (exact spec) ───────────────────────── */
+  /* Oasis Indigo  #1A2B47   — primary, authoritative */
+  /* Dune Gold     #C5A059   — primary CTA accent */
+  /* Maghreb Mint  #26DE81   — success / "growth" */
+  /* Anthracite    #121417   — dark surface */
+  /* Parchment     #F9FAFB   — light surface */
+  /* Terracotta    #E67E22   — soft alert */
+
+  --canvas:    #F9FAFB;       /* Parchment */
+  --surface:   #FFFFFF;
+  --surface-2: #F3F4F6;       /* slightly cooler, for sidebar */
+  --elevated:  #FFFFFF;
 
   --background: var(--canvas);
-  --foreground: oklch(0.205 0.020 255);  /* deep slate-indigo */
+  --foreground: #1A2B47;       /* Oasis Indigo for body text → AAA on parchment */
 
   --card: var(--surface);
-  --card-foreground: oklch(0.205 0.020 255);
+  --card-foreground: #1A2B47;
   --popover: var(--surface);
-  --popover-foreground: oklch(0.205 0.020 255);
+  --popover-foreground: #1A2B47;
 
-  --primary: oklch(0.225 0.022 255);
-  --primary-foreground: oklch(0.985 0.003 250);
+  --primary: #1A2B47;          /* Oasis Indigo */
+  --primary-foreground: #F9FAFB;
 
-  --secondary: oklch(0.965 0.006 250);
-  --secondary-foreground: oklch(0.265 0.022 255);
+  --secondary: #EEF1F5;
+  --secondary-foreground: #1A2B47;
 
-  --muted: oklch(0.965 0.006 250);
-  --muted-foreground: oklch(0.520 0.018 252);
+  --muted: #EEF1F5;
+  --muted-foreground: #5A6679;
 
-  --accent: oklch(0.760 0.105 78);       /* sand-gold */
-  --accent-foreground: oklch(0.225 0.030 60);
-  --gold:       oklch(0.760 0.105 78);
-  --gold-soft:  oklch(0.940 0.040 80);
+  --accent: #C5A059;           /* Dune Gold — CTA / active */
+  --accent-foreground: #1A2B47; /* gold text uses indigo for AA contrast */
+  --gold:      #C5A059;
+  --gold-soft: #F4ECD8;        /* gold-tinted parchment for backgrounds */
 
-  --destructive: oklch(0.585 0.190 25);
-  --destructive-foreground: oklch(0.985 0.003 250);
-  --success: oklch(0.640 0.130 152);
-  --warning: oklch(0.785 0.130 75);
-  --info:    oklch(0.620 0.110 240);
+  --destructive: #E67E22;      /* Terracotta */
+  --destructive-foreground: #F9FAFB;
+  --success: #26DE81;          /* Maghreb Mint */
+  --warning: #E67E22;
+  --info:    #1A2B47;
 
-  --border:        oklch(0.925 0.006 250);
-  --border-strong: oklch(0.870 0.008 250);
-  --input:         oklch(0.925 0.006 250);
-  --ring:          oklch(0.760 0.105 78);
+  --border:        #E5E7EB;    /* per Precision Card spec */
+  --border-strong: #D1D5DB;
+  --input:         #E5E7EB;
+  --ring:          #C5A059;    /* Dune Gold focus ring */
 
-  /* Persona accents — calm, monochromatic-leaning */
-  --research:  oklch(0.520 0.090 252);   /* indigo */
-  --education: oklch(0.760 0.105 78);    /* gold */
-  --clinical:  oklch(0.585 0.075 195);   /* clinical teal */
+  /* Persona accents — drawn from the same palette family */
+  --research:  #1A2B47;        /* Oasis Indigo */
+  --education: #C5A059;        /* Dune Gold */
+  --clinical:  #26DE81;        /* Maghreb Mint */
 }
 
 .dark {
-  --canvas:    oklch(0.155 0.014 255);
-  --surface:   oklch(0.180 0.016 255);
-  --surface-2: oklch(0.165 0.014 255);
-  --elevated:  oklch(0.205 0.018 255);
+  /* Lab Mode */
+  --canvas:    #121417;        /* Anthracite */
+  --surface:   #1A1D22;
+  --surface-2: #16191D;
+  --elevated:  #1F232A;
 
   --background: var(--canvas);
-  --foreground: oklch(0.965 0.006 250);
+  --foreground: #F9FAFB;
+
   --card: var(--surface);
-  --card-foreground: oklch(0.965 0.006 250);
+  --card-foreground: #F9FAFB;
   --popover: var(--surface);
-  --popover-foreground: oklch(0.965 0.006 250);
+  --popover-foreground: #F9FAFB;
 
-  --primary: oklch(0.965 0.006 250);
-  --primary-foreground: oklch(0.180 0.016 255);
+  --primary: #F9FAFB;
+  --primary-foreground: #1A2B47;
 
-  --secondary: oklch(0.230 0.018 255);
-  --secondary-foreground: oklch(0.965 0.006 250);
-  --muted: oklch(0.225 0.016 255);
-  --muted-foreground: oklch(0.690 0.014 252);
+  --secondary: #20242C;
+  --secondary-foreground: #F9FAFB;
+  --muted: #20242C;
+  --muted-foreground: #9CA3AF;
 
-  --accent: oklch(0.790 0.110 78);
-  --accent-foreground: oklch(0.180 0.030 60);
-  --gold-soft: oklch(0.300 0.040 78);
+  --accent: #D4B26B;           /* slightly brighter gold on dark */
+  --accent-foreground: #121417;
+  --gold:      #D4B26B;
+  --gold-soft: #2A2418;
 
-  --border:        oklch(1 0 0 / 8%);
-  --border-strong: oklch(1 0 0 / 16%);
-  --input:         oklch(1 0 0 / 12%);
-  --ring:          oklch(0.790 0.110 78);
+  --destructive: #E67E22;
+  --destructive-foreground: #F9FAFB;
+  --success: #26DE81;
+  --warning: #E67E22;
+  --info:    #6F8DBF;
 
-  --research:  oklch(0.700 0.105 252);
-  --education: oklch(0.790 0.110 78);
-  --clinical:  oklch(0.730 0.080 195);
+  --border:        rgb(255 255 255 / 0.08);
+  --border-strong: rgb(255 255 255 / 0.16);
+  --input:         rgb(255 255 255 / 0.10);
+  --ring:          #D4B26B;
+
+  --research:  #6F8DBF;
+  --education: #D4B26B;
+  --clinical:  #26DE81;
 }
+
 
 @layer base {
   * { border-color: var(--color-border); }
@@ -153,6 +175,14 @@
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.018em; }
+
+  /* Bilingual Bridge — Arabic at 1.1× for optical parity */
+  :is([dir="rtl"], .font-arabic) { font-feature-settings: "ss01", "calt"; }
+  .font-arabic { font-size: 1.1em; line-height: 1.55; }
+  [dir="rtl"] :where(p, span, h1, h2, h3, h4, h5, h6, button, a, label, td, th, div) {
+    /* slight optical lift for Arabic */
+    letter-spacing: 0;
+  }
 }
 
 @layer utilities {
@@ -162,7 +192,7 @@
   .num-tab { font-variant-numeric: tabular-nums lining-nums; }
   .num-old { font-variant-numeric: oldstyle-nums proportional-nums; }
 
-  /* Logical-property helpers (for graceful RTL mirroring) */
+  /* Logical properties — physical → logical */
   .pis-3 { padding-inline-start: 0.75rem; }
   .pie-3 { padding-inline-end:   0.75rem; }
   .ms-2  { margin-inline-start:  0.5rem; }
@@ -170,35 +200,54 @@
   .border-ie { border-inline-end: 1px solid var(--color-border); }
   .border-is { border-inline-start: 1px solid var(--color-border); }
 
-  /* Refined gradients — Stripe-style desert wash */
+  /* The Precision Card — exact spec */
+  .precision-card {
+    background: var(--color-surface);
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.10), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  }
+  .dark .precision-card {
+    border-color: var(--color-border);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.30);
+  }
+
+  /* Subtle washes — never loud */
   .grad-canvas {
     background:
-      radial-gradient(1200px 600px at 80% -10%, color-mix(in oklab, var(--gold) 12%, transparent), transparent 60%),
-      radial-gradient(900px 500px at -10% 100%, color-mix(in oklab, var(--research) 10%, transparent), transparent 55%),
+      radial-gradient(1100px 520px at 88% -8%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 55%),
+      radial-gradient(800px 460px at -8% 100%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 55%),
       var(--color-canvas);
   }
   .grad-card {
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--color-surface) 100%, transparent),
-      color-mix(in oklab, var(--color-surface-2) 100%, transparent));
+    background: linear-gradient(180deg, var(--color-surface), var(--color-surface-2));
   }
   .grad-gold {
     background: linear-gradient(135deg,
-      color-mix(in oklab, var(--gold) 22%, var(--color-surface)),
-      color-mix(in oklab, var(--gold) 4%, var(--color-surface)) 60%,
+      color-mix(in srgb, var(--gold) 28%, var(--color-surface)),
+      color-mix(in srgb, var(--gold) 6%, var(--color-surface)) 65%,
       var(--color-surface));
   }
   .grid-fine {
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px);
     background-size: 24px 24px;
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
   }
-  /* Tactile micro-interaction — subtle shadow + lift */
-  .tactile { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+
+  /* Calm Motion — 240ms / cubic-bezier(.4,0,.2,1) */
+  .calm { transition: transform var(--dur-calm) var(--ease-calm),
+                       box-shadow var(--dur-calm) var(--ease-calm),
+                       background-color var(--dur-calm) var(--ease-calm),
+                       border-color var(--dur-calm) var(--ease-calm),
+                       color var(--dur-calm) var(--ease-calm); }
+  .tactile { transition: transform var(--dur-calm) var(--ease-calm),
+                          box-shadow var(--dur-calm) var(--ease-calm),
+                          background-color var(--dur-calm) var(--ease-calm); }
   .tactile:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   .tactile:active { transform: translateY(0); }
 
-  .ring-focus { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .ring-focus { outline: 2px solid var(--color-ring); outline-offset: 2px; box-shadow: var(--shadow-glow); }
 }
+
