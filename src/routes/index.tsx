@@ -25,24 +25,39 @@ export const Route = createFileRoute("/")({
 /* ────────────────────────────────────────────────────────────────────── */
 
 function Section({ id, eyebrow, title, titleAr, children }: { id: string; eyebrow: string; title: string; titleAr?: string; children: React.ReactNode }) {
+  // eyebrow looks like "01 · Foundations" — split it into folio number + chapter name
+  const [folio, ...rest] = eyebrow.split("·").map((s) => s.trim());
+  const chapter = rest.join(" · ");
   return (
-    <section id={id} className="border-t border-border py-20">
+    <section id={id} className="relative py-24">
+      {/* running head */}
       <div className="mx-auto max-w-7xl px-8">
-        <header className="mb-10 grid gap-6 md:grid-cols-[320px_1fr] md:items-end">
-          <div>
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">{eyebrow}</div>
-            <h2 className="mt-3 font-display text-4xl font-light text-foreground md:text-5xl">{title}</h2>
-            {titleAr && (
-              <div dir="rtl" className="mt-2 font-arabic text-2xl text-muted-foreground">{titleAr}</div>
-            )}
+        <div className="flex items-baseline justify-between border-b border-foreground pb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/70">
+          <span>Biruni · Design System</span>
+          <span className="num-tab">— {folio} —</span>
+          <span>{chapter}</span>
+        </div>
+      </div>
+      <div className="mx-auto mt-12 max-w-7xl px-8">
+        <header className="mb-12 grid gap-x-10 gap-y-4 md:grid-cols-[80px_1fr]">
+          <div className="hidden md:block">
+            <div className="font-display text-7xl font-light leading-none text-accent num-old">{folio}</div>
           </div>
-          <div className="h-px w-full bg-border md:mb-3" />
+          <div>
+            <div className="smcp text-[11px] text-muted-foreground">Chapter · {chapter}</div>
+            <h2 className="mt-2 font-display text-5xl font-light leading-[1.05] text-foreground md:text-6xl">{title}</h2>
+            {titleAr && (
+              <div dir="rtl" className="mt-2 font-arabic text-3xl text-foreground/70">{titleAr}</div>
+            )}
+            <div className="mt-5 h-px w-24 bg-foreground" />
+          </div>
         </header>
         {children}
       </div>
     </section>
   );
 }
+
 
 function Swatch({ name, varName, hex, fg = "text-ink-50" }: { name: string; varName: string; hex?: string; fg?: string }) {
   return (
