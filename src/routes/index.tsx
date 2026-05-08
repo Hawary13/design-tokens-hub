@@ -189,21 +189,25 @@ function DesignSystem() {
 
       {/* ── Foundations ── */}
       <Section id="foundations" eyebrow="01 · Foundations" title="Principles" titleAr="المبادئ">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-0 border-y border-foreground md:grid-cols-3 md:divide-x md:divide-foreground/30">
           {[
-            { icon: Brain, title: "Cognitive clarity", titleAr: "وضوحٌ معرفي", body: "Every surface earns its weight. Density serves the work, not the brand.", bodyAr: "كلُّ عنصرٍ يستحقُّ مكانه. الكثافةُ تخدمُ العمل، لا العلامة." },
-            { icon: Globe, title: "Bilingual by default", titleAr: "ثنائيُّ اللغة افتراضيًا", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully.", bodyAr: "اللاتينيّةُ والعربيّةُ على إيقاعٍ واحد. ينعكسُ التخطيطُ بأناقة." },
-            { icon: Layers, title: "Persona-aware", titleAr: "مدركٌ للأدوار", body: "Research, Education, Clinical — three accents, one system.", bodyAr: "بحثٌ، تعليمٌ، عيادةٌ — ثلاثةُ ألوانٍ في نظامٍ واحد." },
+            { n: "i.", icon: Brain, title: "Cognitive clarity", titleAr: "وضوحٌ معرفي", body: "Every surface earns its weight. Density serves the work, not the brand.", bodyAr: "كلُّ عنصرٍ يستحقُّ مكانه. الكثافةُ تخدمُ العمل، لا العلامة." },
+            { n: "ii.", icon: Globe, title: "Bilingual by default", titleAr: "ثنائيُّ اللغة افتراضيًا", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully.", bodyAr: "اللاتينيّةُ والعربيّةُ على إيقاعٍ واحد. ينعكسُ التخطيطُ بأناقة." },
+            { n: "iii.", icon: Layers, title: "Persona-aware", titleAr: "مدركٌ للأدوار", body: "Research, Education, Clinical — three accents, one system.", bodyAr: "بحثٌ، تعليمٌ، عيادةٌ — ثلاثةُ ألوانٍ في نظامٍ واحد." },
           ].map((p) => (
-            <div key={p.title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-              <p.icon className="text-accent" size={22} />
-              <h3 className="mt-4 font-display text-2xl font-medium">{p.title}</h3>
-              <div dir="rtl" className="font-arabic text-xl text-foreground/80">{p.titleAr}</div>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-              <p dir="rtl" className="mt-2 font-arabic text-base leading-loose text-muted-foreground">{p.bodyAr}</p>
-            </div>
+            <article key={p.title} className="relative p-8 first:pl-0 md:px-8">
+              <div className="flex items-baseline justify-between border-b border-foreground/30 pb-3">
+                <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground num-old">{p.n}</span>
+                <p.icon className="text-accent" size={18} strokeWidth={1.25} />
+              </div>
+              <h3 className="mt-5 font-display text-3xl font-light leading-tight">{p.title}</h3>
+              <div dir="rtl" className="mt-1 font-arabic text-2xl text-foreground/75">{p.titleAr}</div>
+              <p className="mt-4 text-[14px] leading-[1.7] text-foreground/80">{p.body}</p>
+              <p dir="rtl" className="mt-2 font-arabic text-[15px] leading-[2] text-muted-foreground">{p.bodyAr}</p>
+            </article>
           ))}
         </div>
+
       </Section>
 
       {/* ── Color ── */}
