@@ -138,14 +138,16 @@ function DesignSystem() {
       <Section id="foundations" eyebrow="01 · Foundations" title="Principles" titleAr="المبادئ">
         <div className="grid gap-6 md:grid-cols-3">
           {[
-            { icon: Brain, title: "Cognitive clarity", body: "Every surface earns its weight. Density serves the work, not the brand." },
-            { icon: Globe, title: "Bilingual by default", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully." },
-            { icon: Layers, title: "Persona-aware", body: "Research, Education, Clinical — three accents, one system." },
+            { icon: Brain, title: "Cognitive clarity", titleAr: "وضوحٌ معرفي", body: "Every surface earns its weight. Density serves the work, not the brand.", bodyAr: "كلُّ عنصرٍ يستحقُّ مكانه. الكثافةُ تخدمُ العمل، لا العلامة." },
+            { icon: Globe, title: "Bilingual by default", titleAr: "ثنائيُّ اللغة افتراضيًا", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully.", bodyAr: "اللاتينيّةُ والعربيّةُ على إيقاعٍ واحد. ينعكسُ التخطيطُ بأناقة." },
+            { icon: Layers, title: "Persona-aware", titleAr: "مدركٌ للأدوار", body: "Research, Education, Clinical — three accents, one system.", bodyAr: "بحثٌ، تعليمٌ، عيادةٌ — ثلاثةُ ألوانٍ في نظامٍ واحد." },
           ].map((p) => (
             <div key={p.title} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <p.icon className="text-accent" size={22} />
               <h3 className="mt-4 font-display text-2xl font-medium">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+              <div dir="rtl" className="font-arabic text-xl text-foreground/80">{p.titleAr}</div>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+              <p dir="rtl" className="mt-2 font-arabic text-base leading-loose text-muted-foreground">{p.bodyAr}</p>
             </div>
           ))}
         </div>
@@ -197,19 +199,21 @@ function DesignSystem() {
             <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Persona accents</h3>
             <div className="grid gap-4 md:grid-cols-3">
               {[
-                { key: "research", label: "Research", icon: Beaker, copy: "Cool indigo. Empirical. Data-forward." },
-                { key: "education", label: "Education", icon: GraduationCap, copy: "Warm saffron. Inviting. Classroom-ready." },
-                { key: "clinical", label: "Clinical", icon: Stethoscope, copy: "Calm teal. Trustworthy. Care-first." },
+                { key: "research", label: "Research", labelAr: "بحث", icon: Beaker, copy: "Cool indigo. Empirical. Data-forward.", copyAr: "نيليٌّ هادئ. تجريبيٌّ. مُوجَّهٌ بالبيانات." },
+                { key: "education", label: "Education", labelAr: "تعليم", icon: GraduationCap, copy: "Warm saffron. Inviting. Classroom-ready.", copyAr: "زعفرانيٌّ دافئ. مُرحِّب. جاهزٌ للفصل." },
+                { key: "clinical", label: "Clinical", labelAr: "عيادة", icon: Stethoscope, copy: "Calm teal. Trustworthy. Care-first.", copyAr: "فيروزيٌّ ساكن. موثوق. الرعايةُ أوّلًا." },
               ].map((p) => (
                 <div key={p.key} className="overflow-hidden rounded-2xl border border-border bg-card">
-                  <div className="flex h-32 items-end p-5" style={{ background: `var(--${p.key})`, color: `var(--${p.key}-foreground)` }}>
+                  <div className="flex h-32 items-end justify-between p-5" style={{ background: `var(--${p.key})`, color: `var(--${p.key}-foreground)` }}>
                     <div>
                       <p.icon size={22} />
                       <div className="mt-3 font-display text-2xl">{p.label}</div>
                     </div>
+                    <div dir="rtl" className="font-arabic text-2xl opacity-90">{p.labelAr}</div>
                   </div>
                   <div className="p-5">
                     <p className="text-sm text-muted-foreground">{p.copy}</p>
+                    <p dir="rtl" className="mt-1 font-arabic text-base leading-loose text-muted-foreground">{p.copyAr}</p>
                     <div className="mt-3 font-mono text-[11px] text-muted-foreground">--{p.key} / --{p.key}-foreground</div>
                   </div>
                 </div>
