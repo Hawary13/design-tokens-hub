@@ -5,24 +5,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
-  --color-surface-elevated: var(--surface-elevated);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-muted: var(--primary-muted);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -32,229 +30,144 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
-  --color-success-foreground: var(--success-foreground);
   --color-warning: var(--warning);
-  --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
   --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  --color-signal: var(--signal);
+  --color-signal-foreground: var(--signal-foreground);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+
   --color-research: var(--research);
-  --color-research-foreground: var(--research-foreground);
   --color-education: var(--education);
-  --color-education-foreground: var(--education-foreground);
   --color-clinical: var(--clinical);
-  --color-clinical-foreground: var(--clinical-foreground);
 
-  --color-ink-50: var(--ink-50);
-  --color-ink-100: var(--ink-100);
-  --color-ink-200: var(--ink-200);
-  --color-ink-300: var(--ink-300);
-  --color-ink-400: var(--ink-400);
-  --color-ink-500: var(--ink-500);
-  --color-ink-600: var(--ink-600);
-  --color-ink-700: var(--ink-700);
-  --color-ink-800: var(--ink-800);
-  --color-ink-900: var(--ink-900);
-
-  --color-sand-50: var(--sand-50);
-  --color-sand-100: var(--sand-100);
-  --color-sand-200: var(--sand-200);
-  --color-sand-300: var(--sand-300);
-  --color-sand-400: var(--sand-400);
-  --color-sand-500: var(--sand-500);
-  --color-sand-600: var(--sand-600);
-  --color-sand-700: var(--sand-700);
-  --color-sand-800: var(--sand-800);
-  --color-sand-900: var(--sand-900);
-
-  --color-saffron-300: var(--saffron-300);
-  --color-saffron-500: var(--saffron-500);
-  --color-saffron-700: var(--saffron-700);
-
-  --font-display: "Fraunces", "Cormorant Garamond", ui-serif, Georgia, serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --font-arabic: "Noto Naskh Arabic", "Amiri", serif;
-
-  --shadow-xs: 0 1px 2px 0 oklch(0.2 0.04 265 / 0.04);
-  --shadow-sm: 0 2px 6px -1px oklch(0.2 0.04 265 / 0.06), 0 1px 2px -1px oklch(0.2 0.04 265 / 0.04);
-  --shadow-md: 0 8px 20px -6px oklch(0.2 0.04 265 / 0.10), 0 2px 6px -2px oklch(0.2 0.04 265 / 0.06);
-  --shadow-lg: 0 24px 48px -12px oklch(0.2 0.04 265 / 0.18);
-  --shadow-glow: 0 0 0 1px oklch(0.55 0.14 200 / 0.25), 0 8px 32px -8px oklch(0.55 0.14 200 / 0.45);
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Noto Naskh Arabic", serif;
 }
 
 :root {
-  --radius: 0.25rem;
+  --radius: 0px;
 
-  /* Ink — soft scholarly indigo (never pure black) */
-  --ink-50:  oklch(0.975 0.006 260);
-  --ink-100: oklch(0.945 0.012 260);
-  --ink-200: oklch(0.895 0.018 260);
-  --ink-300: oklch(0.805 0.026 260);
-  --ink-400: oklch(0.655 0.038 262);
-  --ink-500: oklch(0.500 0.048 264);
-  --ink-600: oklch(0.395 0.050 265);
-  --ink-700: oklch(0.305 0.045 266);
-  --ink-800: oklch(0.235 0.038 266);
-  --ink-900: oklch(0.180 0.030 266);
+  /* Two-tone foundation: paper + ink, plus one signal */
+  --paper: oklch(0.965 0.008 95);     /* warm cream */
+  --ink:   oklch(0.165 0.012 260);    /* near-black indigo */
+  --signal: oklch(0.78 0.19 130);     /* electric lime — the only loud color */
+  --signal-foreground: oklch(0.165 0.012 260);
 
-  /* Sand — calm warm neutral, anchors backgrounds */
-  --sand-50:  oklch(0.980 0.008 82);
-  --sand-100: oklch(0.960 0.013 80);
-  --sand-200: oklch(0.925 0.020 78);
-  --sand-300: oklch(0.870 0.028 76);
-  --sand-400: oklch(0.770 0.040 72);
-  --sand-500: oklch(0.650 0.052 68);
-  --sand-600: oklch(0.515 0.055 60);
-  --sand-700: oklch(0.395 0.048 50);
-  --sand-800: oklch(0.295 0.038 45);
-  --sand-900: oklch(0.205 0.030 45);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --surface: oklch(0.945 0.012 95);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
 
-  /* Saffron accent — desaturated, warm, never neon */
-  --saffron-300: oklch(0.860 0.090 75);
-  --saffron-500: oklch(0.760 0.115 65);
-  --saffron-700: oklch(0.595 0.110 55);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: oklch(0.92 0.012 95);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.92 0.010 95);
+  --muted-foreground: oklch(0.45 0.020 260);
+  --accent: var(--signal);
+  --accent-foreground: var(--ink);
 
-  /* Semantic — light. Off-white cream avoids glare. */
-  --background: oklch(0.970 0.012 82);
-  --foreground: oklch(0.235 0.038 266);
-  --surface: oklch(0.955 0.014 80);
-  --surface-elevated: oklch(0.985 0.008 82);
-  --card: oklch(0.985 0.008 82);
-  --card-foreground: oklch(0.235 0.038 266);
-  --popover: oklch(0.985 0.008 82);
-  --popover-foreground: oklch(0.235 0.038 266);
+  --destructive: oklch(0.55 0.22 28);
+  --destructive-foreground: var(--paper);
+  --success: oklch(0.65 0.16 145);
+  --warning: oklch(0.78 0.16 75);
+  --info: oklch(0.55 0.16 245);
 
-  --primary: oklch(0.475 0.075 220);
-  --primary-foreground: oklch(0.980 0.006 82);
-  --primary-muted: oklch(0.920 0.030 220);
+  --border: var(--ink);
+  --input: oklch(0.85 0.014 95);
+  --ring: var(--signal);
 
-  --secondary: oklch(0.935 0.018 78);
-  --secondary-foreground: oklch(0.275 0.045 266);
-
-  --muted: oklch(0.945 0.014 78);
-  --muted-foreground: oklch(0.495 0.028 260);
-
-  --accent: oklch(0.760 0.115 65);
-  --accent-foreground: oklch(0.235 0.045 50);
-
-  /* Softer alerts — informative, not alarming */
-  --destructive: oklch(0.610 0.135 28);
-  --destructive-foreground: oklch(0.985 0.006 82);
-  --success: oklch(0.625 0.090 160);
-  --success-foreground: oklch(0.985 0.006 82);
-  --warning: oklch(0.795 0.105 82);
-  --warning-foreground: oklch(0.245 0.045 50);
-  --info: oklch(0.640 0.085 235);
-  --info-foreground: oklch(0.985 0.006 82);
-
-  --border: oklch(0.895 0.014 70);
-  --border-strong: oklch(0.815 0.020 70);
-  --input: oklch(0.895 0.014 70);
-  --ring: oklch(0.560 0.095 220);
-
-  /* Persona accents — distinct hues (220° / 65° / 175°) so they
-     remain distinguishable across deuteranopia & protanopia. */
-  --research: oklch(0.510 0.095 232);
-  --research-foreground: oklch(0.985 0.006 82);
-  --education: oklch(0.730 0.115 62);
-  --education-foreground: oklch(0.245 0.045 50);
-  --clinical: oklch(0.585 0.075 178);
-  --clinical-foreground: oklch(0.985 0.006 82);
+  /* Three personas — flat, signal-style */
+  --research: oklch(0.55 0.18 250);   /* ultramarine */
+  --education: oklch(0.78 0.19 130);  /* lime (== signal) */
+  --clinical: oklch(0.62 0.16 195);   /* cyan */
 }
 
 .dark {
-  /* Warm indigo-charcoal — never pure black, reduces halation */
-  --background: oklch(0.190 0.028 266);
-  --foreground: oklch(0.935 0.012 80);
-  --surface: oklch(0.225 0.034 266);
-  --surface-elevated: oklch(0.260 0.038 266);
-  --card: oklch(0.245 0.038 266);
-  --card-foreground: oklch(0.935 0.012 80);
-  --popover: oklch(0.245 0.038 266);
-  --popover-foreground: oklch(0.935 0.012 80);
-
-  --primary: oklch(0.745 0.095 218);
-  --primary-foreground: oklch(0.195 0.030 266);
-  --primary-muted: oklch(0.320 0.050 220);
-
-  --secondary: oklch(0.295 0.040 266);
-  --secondary-foreground: oklch(0.935 0.012 80);
-  --muted: oklch(0.275 0.036 266);
-  --muted-foreground: oklch(0.715 0.022 80);
-  --accent: oklch(0.785 0.110 68);
-  --accent-foreground: oklch(0.215 0.045 50);
-
-  --destructive: oklch(0.700 0.130 28);
-  --destructive-foreground: oklch(0.195 0.030 266);
-  --success: oklch(0.730 0.100 160);
-  --success-foreground: oklch(0.195 0.030 266);
-  --warning: oklch(0.825 0.115 82);
-  --warning-foreground: oklch(0.215 0.045 50);
-  --info: oklch(0.730 0.095 232);
-  --info-foreground: oklch(0.195 0.030 266);
-
-  --border: oklch(1 0 0 / 10%);
-  --border-strong: oklch(1 0 0 / 20%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.745 0.095 218);
-
-  --research: oklch(0.735 0.105 232);
-  --research-foreground: oklch(0.195 0.030 266);
-  --education: oklch(0.810 0.115 65);
-  --education-foreground: oklch(0.215 0.045 50);
-  --clinical: oklch(0.745 0.085 178);
-  --clinical-foreground: oklch(0.195 0.030 266);
+  --paper: oklch(0.165 0.012 260);
+  --ink:   oklch(0.965 0.008 95);
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --surface: oklch(0.21 0.014 260);
+  --card: var(--paper);
+  --card-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: oklch(0.25 0.016 260);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.25 0.014 260);
+  --muted-foreground: oklch(0.70 0.012 95);
+  --border: var(--ink);
+  --input: oklch(0.30 0.014 260);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
   html { font-family: var(--font-sans); }
   body {
-    background-color: var(--color-background);
+    background: var(--color-background);
     color: var(--color-foreground);
-    font-feature-settings: "ss01", "cv11", "onum", "liga";
+    font-feature-settings: "ss01", "ss02", "cv11", "tnum";
     -webkit-font-smoothing: antialiased;
-    /* subtle paper grain */
-    background-image:
-      radial-gradient(color-mix(in oklab, var(--foreground) 5%, transparent) 0.5px, transparent 0.6px),
-      radial-gradient(color-mix(in oklab, var(--foreground) 3%, transparent) 0.5px, transparent 0.6px);
-    background-size: 3px 3px, 7px 7px;
-    background-position: 0 0, 1px 2px;
   }
-  h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.02em; }
 }
 
 @layer utilities {
   .font-display { font-family: var(--font-display); }
-  .font-arabic { font-family: var(--font-arabic); }
   .font-mono { font-family: var(--font-mono); }
-  .num-old { font-variant-numeric: oldstyle-nums; }
+  .font-arabic { font-family: var(--font-arabic); }
   .num-tab { font-variant-numeric: tabular-nums lining-nums; }
-  .smcp { font-variant-caps: all-small-caps; letter-spacing: 0.08em; }
-  .rule-thick { border-top: 3px double var(--color-foreground); }
-  .grid-paper {
-    background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 5%, transparent) 1px, transparent 1px);
-    background-size: 32px 32px;
-  }
-  .dropcap::first-letter {
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: 5.5em;
-    line-height: 0.85;
-    float: left;
-    padding: 0.05em 0.12em 0 0;
-    color: var(--color-accent);
-  }
-  .ring-focus {
-    outline: 2px solid var(--ring);
-    outline-offset: 2px;
-  }
-}
 
+  /* Engineering grid — visible measurement lines */
+  .blueprint {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--ink) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--ink) 8%, transparent) 1px, transparent 1px),
+      linear-gradient(to right, color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--ink) 16%, transparent) 1px, transparent 1px);
+    background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  }
+
+  /* Diagonal hatching — engineering "void" fill */
+  .hatched {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--color-foreground) 0,
+      var(--color-foreground) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  }
+
+  /* Crosshair register marks at corners */
+  .registered { position: relative; }
+  .registered::before, .registered::after,
+  .registered > .reg-tl, .registered > .reg-br {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--color-foreground);
+  }
+  .registered::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .registered::after  { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+
+  .ticker {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .ring-focus { outline: 2px solid var(--color-signal); outline-offset: 2px; }
+}
