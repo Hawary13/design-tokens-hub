@@ -750,13 +750,49 @@ function DesignSystem() {
 /* ── Building blocks ── */
 
 function Logo({ small = false }: { small?: boolean }) {
-  const s = small ? 28 : 36;
+  const s = small ? 28 : 40;
   return (
-    <div className="grid place-items-center rounded-xl bg-gradient-to-br from-ink-800 to-ink-600 text-sand-100" style={{ width: s, height: s }}>
-      <span className="font-display text-base font-medium">B</span>
-    </div>
+    <svg width={s} height={s} viewBox="0 0 40 40" className="text-foreground">
+      <rect x="0.5" y="0.5" width="39" height="39" fill="none" stroke="currentColor" strokeWidth="1" />
+      <g transform="translate(20 20)" stroke="currentColor" strokeWidth="1" fill="none">
+        <rect x="-12" y="-12" width="24" height="24" />
+        <rect x="-12" y="-12" width="24" height="24" transform="rotate(45)" />
+        <circle r="5" fill="var(--color-accent)" stroke="none" />
+      </g>
+    </svg>
   );
 }
+
+function Ornament() {
+  // Eight-pointed star (khatam) — minimal MENA geometry
+  return (
+    <svg viewBox="0 0 200 200" className="mx-auto block w-full max-w-[220px] text-foreground">
+      <g fill="none" stroke="currentColor" strokeWidth="0.8">
+        <circle cx="100" cy="100" r="92" />
+        <circle cx="100" cy="100" r="68" />
+        <circle cx="100" cy="100" r="34" strokeWidth="0.6" />
+        <g transform="translate(100 100)">
+          <rect x="-72" y="-72" width="144" height="144" />
+          <rect x="-72" y="-72" width="144" height="144" transform="rotate(45)" />
+          <rect x="-48" y="-48" width="96" height="96" />
+          <rect x="-48" y="-48" width="96" height="96" transform="rotate(45)" />
+        </g>
+        {Array.from({ length: 16 }).map((_, i) => (
+          <line
+            key={i}
+            x1="100"
+            y1="100"
+            x2={100 + 92 * Math.cos((i * Math.PI) / 8)}
+            y2={100 + 92 * Math.sin((i * Math.PI) / 8)}
+            strokeWidth="0.4"
+          />
+        ))}
+      </g>
+      <circle cx="100" cy="100" r="6" fill="var(--color-accent)" />
+    </svg>
+  );
+}
+
 
 function Badge({ children, tone = "default" }: { children: React.ReactNode; tone?: "default"|"primary"|"accent"|"success"|"warning"|"destructive"|"research"|"education"|"clinical" }) {
   const map: Record<string,string> = {
