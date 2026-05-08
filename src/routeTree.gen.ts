@@ -9,48 +9,55 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SystemRouteImport } from './routes/system'
 import { Route as DeckRouteImport } from './routes/deck'
-import { Route as IndexRouteImport } from './routes/index'
 
+const SystemRoute = SystemRouteImport.update({
+  id: '/system',
+  path: '/system',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DeckRoute = DeckRouteImport.update({
   id: '/deck',
   path: '/deck',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
+  '/system': typeof SystemRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
+  '/system': typeof SystemRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
+  '/system': typeof SystemRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/deck'
+  fullPaths: '/deck' | '/system'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/deck'
-  id: '__root__' | '/' | '/deck'
+  to: '/deck' | '/system'
+  id: '__root__' | '/deck' | '/system'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   DeckRoute: typeof DeckRoute
+  SystemRoute: typeof SystemRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/system': {
+      id: '/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof SystemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/deck': {
       id: '/deck'
       path: '/deck'
@@ -58,20 +65,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeckRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   DeckRoute: DeckRoute,
+  SystemRoute: SystemRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

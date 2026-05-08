@@ -9,7 +9,7 @@ import {
   Globe, Sun, Moon, Hash, Type, Palette, Grid3x3, Component, Zap,
 } from "lucide-react";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/system")({
   head: () => ({
     meta: [
       { title: "Biruni — Behavioral Science Workspace" },
