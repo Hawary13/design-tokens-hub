@@ -597,6 +597,83 @@ function DesignSystem() {
             </div>
           </div>
         </div>
+
+        {/* RTL mirror */}
+        <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-surface shadow-lg" dir="rtl">
+          <div className="grid md:grid-cols-[260px_1fr]">
+            <aside className="border-l border-border bg-surface-elevated p-5">
+              <div className="flex items-center gap-2">
+                <Logo small /> <span className="font-arabic text-xl">بيروني</span>
+              </div>
+              <div className="mt-6 space-y-1 text-sm">
+                {[
+                  { i: BarChart3, l: "نظرة عامّة", a: true },
+                  { i: Beaker, l: "التجارب" },
+                  { i: BookOpen, l: "المتجر" },
+                  { i: Users, l: "المشاركون" },
+                  { i: Database, l: "البيانات" },
+                  { i: Settings, l: "الإعدادات" },
+                ].map((it) => (
+                  <a key={it.l} className={`flex items-center gap-2.5 rounded-lg px-3 py-2 font-arabic text-base ${it.a ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
+                    <it.i size={16} /> {it.l}
+                  </a>
+                ))}
+              </div>
+              <div className="mt-8 rounded-xl bg-gradient-to-bl from-accent/30 to-saffron-300/20 p-4">
+                <Sparkles size={16} className="text-saffron-700" />
+                <div className="mt-2 font-arabic text-base">ترقية إلى العيادة</div>
+                <div className="font-arabic text-xs text-muted-foreground">مساحة عمل متوافقة · إدارة المرضى</div>
+              </div>
+            </aside>
+
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">مساحة العمل · د. أريس ثورن</div>
+                  <h3 className="mt-1 font-arabic text-3xl">نظرة عامّة على الدراسات</h3>
+                </div>
+                <div className="flex gap-2">
+                  <button className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground"><Bell size={15}/></button>
+                  <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 font-arabic text-sm font-medium text-primary-foreground"><Plus size={14}/> جديد</button>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3 md:grid-cols-3">
+                <StatAr label="الدراسات النشطة" value="١٤" delta="+٣" />
+                <StatAr label="المشاركون" value="١٬٢٨٤" delta="+١٦٢" />
+                <StatAr label="متوسّط الإكمال" value="٪٩٢٫٤" delta="+١٫٨٪" tone="success" />
+              </div>
+
+              <div className="mt-6 overflow-hidden rounded-xl border border-border">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/60 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الدراسة</th>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">التخصّص</th>
+                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الحالة</th>
+                      <th className="px-4 py-2.5 text-left font-arabic text-xs">العدد</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { n: "N-Back · سعة الذاكرة", p: "research", pAr: "بحث", s: "نشط", v: "٣٤٢" },
+                      { n: "Stroop · فصل ٢", p: "education", pAr: "تعليم", s: "مسوّدة", v: "—" },
+                      { n: "PHQ-9 · مجموعة أ", p: "clinical", pAr: "عيادة", s: "نشط", v: "١١٨" },
+                      { n: "البحث البصري · تجريبي", p: "research", pAr: "بحث", s: "متوقّف", v: "٢٧" },
+                    ].map((r) => (
+                      <tr key={r.n} className="border-t border-border">
+                        <td className="px-4 py-3 font-arabic text-base font-medium text-foreground">{r.n}</td>
+                        <td className="px-4 py-3"><Badge tone={r.p as any}>{r.pAr}</Badge></td>
+                        <td className="px-4 py-3 font-arabic text-muted-foreground">{r.s}</td>
+                        <td className="px-4 py-3 text-left font-arabic">{r.v}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </Section>
 
       {/* ── Footer ── */}
