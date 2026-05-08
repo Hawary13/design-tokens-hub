@@ -3,16 +3,9 @@ import { useState } from "react";
 import {
   Brain, ArrowUpRight, Sparkles, Languages, Database, Eye,
   GraduationCap, Stethoscope, Beaker, Shield, Cpu, Check,
-  Menu, X, ChevronRight, Quote, Globe,
+  Menu, X, ChevronRight, Quote, Globe, Activity, LineChart,
+  Layers, Zap, Lock, FileText,
 } from "lucide-react";
-
-import heroImg from "@/assets/deck/hero.jpg";
-import dashboardImg from "@/assets/deck/dashboard.jpg";
-import researcherImg from "@/assets/deck/researcher.jpg";
-import clinicianImg from "@/assets/deck/clinician.jpg";
-import studentsImg from "@/assets/deck/students.jpg";
-import aiImg from "@/assets/deck/ai.jpg";
-import eyetrackImg from "@/assets/deck/eyetrack.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,8 +14,6 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Biruni is a bilingual workspace for behavioral research, education, and clinical practice across the MENA region — calm, precise, and built in your language." },
       { property: "og:title", content: "Biruni — A calm instrument for behavioral science" },
       { property: "og:description", content: "Bilingual workspace for behavioral research, education, and clinical practice across MENA." },
-      { property: "og:image", content: heroImg },
-      { name: "twitter:image", content: heroImg },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -42,22 +33,21 @@ function Landing() {
   return (
     <div dir={rtl ? "rtl" : "ltr"} className={`min-h-screen bg-canvas text-foreground ${rtl ? "font-arabic" : ""}`}>
       {/* ── Nav ───────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/75 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
           <Link to="/" className="flex items-center gap-2">
             <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
               <Brain className="h-4 w-4" />
             </div>
-            <span className="font-display text-[15px] font-semibold tracking-tight" style={{ fontFamily: "Inter" }}>Biruni</span>
+            <span className="font-display text-[15px] font-semibold tracking-tight">Biruni</span>
             <span className="hidden rounded-full bg-gold-soft px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent-foreground sm:inline">MENA</span>
           </Link>
 
           <nav className="ms-6 hidden items-center gap-5 text-[13px] text-muted-foreground md:flex">
             <a href="#product" className="calm hover:text-foreground">{t("Product", "المنتج")}</a>
-            <a href="#personas" className="calm hover:text-foreground">{t("For teams", "للفِرق")}</a>
+            <a href="#personas" className="calm hover:text-foreground">{t("For teams", "للفرق")}</a>
             <a href="#bilingual" className="calm hover:text-foreground">{t("Bilingual", "ثنائي اللغة")}</a>
             <a href="#pricing" className="calm hover:text-foreground">{t("Pricing", "الأسعار")}</a>
-            <Link to="/deck" className="calm hover:text-foreground">{t("Deck", "العرض")}</Link>
           </nav>
 
           <div className="ms-auto flex items-center gap-2">
@@ -83,7 +73,7 @@ function Landing() {
             <div className="flex flex-col gap-1 px-4 py-3 text-[14px]">
               {[
                 ["#product", t("Product", "المنتج")],
-                ["#personas", t("For teams", "للفِرق")],
+                ["#personas", t("For teams", "للفرق")],
                 ["#bilingual", t("Bilingual", "ثنائي اللغة")],
                 ["#pricing", t("Pricing", "الأسعار")],
               ].map(([href, label]) => (
@@ -103,40 +93,41 @@ function Landing() {
       <main>
         {/* ── Hero ────────────────────────────────────────────── */}
         <section className="grad-canvas relative overflow-hidden">
-          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-20 md:grid-cols-12 md:gap-8 md:py-24 lg:px-8 lg:py-28">
+          <div aria-hidden className="absolute inset-0 grid-fine opacity-60" />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 md:grid-cols-12 md:gap-8 md:py-28 lg:px-8 lg:py-32">
             <div className="md:col-span-7">
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 py-1 ps-1 pe-3 text-[12px] backdrop-blur">
                 <span className="rounded-full bg-gold-soft px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent-foreground">Beta · 2026</span>
-                <span className="text-muted-foreground">{t("Behavioral instrument for MENA", "أداةُ السلوك للشرق الأوسط")}</span>
+                <span className="text-muted-foreground">{t("Behavioral instrument for MENA", "أداة السلوك للشرق الأوسط")}</span>
               </div>
 
-              <h1 className={`mt-5 font-display text-[36px] font-semibold leading-[1.05] tracking-[-0.02em] sm:text-[48px] lg:text-[64px] ${rtl ? "font-arabic font-bold" : ""}`}>
+              <h1 className={`mt-6 font-display text-[40px] font-semibold leading-[1.04] tracking-[-0.022em] sm:text-[56px] lg:text-[72px] ${rtl ? "font-arabic font-bold" : ""}`}>
                 {rtl ? (
-                  <>منصةٌ هادئةٌ <span className="text-foreground/60">للقياس،</span><br /> مصمّمةٌ <span className="bg-gradient-to-r from-gold to-research bg-clip-text text-transparent">بلغتك</span>.</>
+                  <>منصة هادئة <span className="text-foreground/55">للقياس،</span><br /> مصممة <span className="bg-gradient-to-r from-gold to-primary bg-clip-text text-transparent">بلغتك</span>.</>
                 ) : (
-                  <>A calm instrument <span className="text-foreground/60">for measurement,</span><br className="hidden sm:block" /> designed in <span className="bg-gradient-to-r from-gold to-research bg-clip-text text-transparent">your language</span>.</>
+                  <>A calm instrument <span className="text-foreground/55">for measurement,</span><br className="hidden sm:block" /> designed in <span className="bg-gradient-to-r from-gold to-primary bg-clip-text text-transparent">your language</span>.</>
                 )}
               </h1>
 
-              <p className={`mt-5 max-w-xl text-[15px] leading-[1.65] text-muted-foreground sm:text-[17px] ${rtl ? "font-arabic" : ""}`}>
+              <p className={`mt-6 max-w-xl text-[15px] leading-[1.7] text-muted-foreground sm:text-[17px] ${rtl ? "font-arabic" : ""}`}>
                 {t(
                   "Biruni is a bidirectional-by-default workspace that helps researchers, educators, and clinicians across MENA design experiments, run sessions, and turn behavior into evidence.",
-                  "بيروني مساحةُ عملٍ ثنائيّةُ الاتّجاهِ افتراضيًّا، تُعينُ الباحثين والمعلّمين والأطبّاءَ في الشرقِ الأوسطِ على تصميمِ التجارب، وإجراءِ الجلسات، وتحويلِ السلوكِ إلى دليلٍ علميّ."
+                  "بيروني مساحة عمل ثنائية الاتجاه افتراضيا، تعين الباحثين والمعلمين والأطباء في الشرق الأوسط على تصميم التجارب وإجراء الجلسات وتحويل السلوك إلى دليل علمي."
                 )}
               </p>
 
-              <div className="mt-7 flex flex-wrap items-center gap-2.5">
-                <a href="#cta" className="inline-flex h-10 items-center gap-2 rounded-md bg-foreground px-4 text-[13px] font-medium text-background tactile">
-                  {t("Request early access", "اطلب وصولًا مبكّرًا")} <ArrowUpRight className="h-4 w-4" />
+              <div className="mt-8 flex flex-wrap items-center gap-2.5">
+                <a href="#cta" className="inline-flex h-11 items-center gap-2 rounded-md bg-foreground px-5 text-[13px] font-medium text-background tactile">
+                  {t("Request early access", "اطلب وصولا مبكرا")} <ArrowUpRight className="h-4 w-4" />
                 </a>
-                <Link to="/deck" className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-background px-4 text-[13px] font-medium tactile">
-                  <Sparkles className="h-4 w-4 text-gold" /> {t("View the deck", "شاهد العرض")}
-                </Link>
+                <a href="#product" className="inline-flex h-11 items-center gap-2 rounded-md border border-border bg-background px-5 text-[13px] font-medium tactile">
+                  <Sparkles className="h-4 w-4 text-gold" /> {t("See how it works", "شاهد كيف يعمل")}
+                </a>
               </div>
 
-              <dl className="mt-10 grid max-w-lg grid-cols-3 gap-6">
+              <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6">
                 {[
-                  { v: "12+", l: t("Pilot labs", "مختبرات تجريبيّة") },
+                  { v: "12+", l: t("Pilot labs", "مختبرات تجريبية") },
                   { v: "4.2k", l: t("Participants", "مشاركون") },
                   { v: "3", l: t("Countries", "دول") },
                 ].map((s) => (
@@ -148,19 +139,9 @@ function Landing() {
               </dl>
             </div>
 
+            {/* Hero visual — pure design-system composition */}
             <div className="md:col-span-5">
-              <div className="precision-card relative overflow-hidden">
-                <img src={heroImg} alt="Biruni workspace" className="aspect-[4/5] w-full object-cover md:aspect-[3/4]" loading="eager" />
-                <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent p-4 text-primary-foreground">
-                  <div>
-                    <div className="font-display text-sm font-semibold">{t("Riyadh Behavioral Lab", "مختبر الرياض للسلوك")}</div>
-                    <div className="font-mono text-[10px] opacity-80">Live · 14 sessions today</div>
-                  </div>
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-gold text-accent-foreground">
-                    <ChevronRight className={`h-4 w-4 ${rtl ? "rotate-180" : ""}`} />
-                  </span>
-                </div>
-              </div>
+              <HeroInstrument rtl={rtl} t={t} />
             </div>
           </div>
         </section>
@@ -169,7 +150,7 @@ function Landing() {
         <section className="border-y border-border bg-surface-2">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-y-4 px-4 py-6 sm:px-6 lg:px-8">
             <span className={`text-[11px] uppercase tracking-[0.18em] text-muted-foreground ${rtl ? "font-arabic normal-case tracking-normal" : "font-mono"}`}>
-              {t("Trusted by labs at", "موثوقٌ به في مختبرات")}
+              {t("Trusted by labs at", "موثوق به في مختبرات")}
             </span>
             <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[13px] font-medium text-muted-foreground">
               {["KAUST", "AUB", "Cairo Uni", "Mohammed VI", "Qatar U", "NYUAD"].map((n) => (
@@ -180,30 +161,30 @@ function Landing() {
         </section>
 
         {/* ── Problem ─────────────────────────────────────────── */}
-        <section id="product" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+        <section id="product" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
           <div className="grid gap-10 md:grid-cols-12 md:gap-12">
             <div className="md:col-span-5">
               <Kicker>{t("The problem", "المشكلة")}</Kicker>
               <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
                 {t("Behavioral tools weren't built for our language — or our reality.",
-                   "أدواتُ السلوكِ لم تُصنَع للغتِنا، ولا لواقعِنا.")}
+                   "أدوات السلوك لم تصنع للغتنا، ولا لواقعنا.")}
               </h2>
               <p className={`mt-4 text-[15px] leading-[1.7] text-muted-foreground ${rtl ? "font-arabic" : ""}`}>
                 {t(
                   "Researchers and clinicians stitch together English-only tools, broken RTL, and exported spreadsheets to make sense of human behavior. The cost is precision.",
-                  "يُراكمُ الباحثون والأطبّاءُ أدواتٍ إنجليزيّةً، واتّجاهًا مكسورًا، وجداولَ مُصدَّرة، ليفهموا السلوكَ البشريّ. والثمنُ هو الدّقّة."
+                  "يراكم الباحثون والأطباء أدوات إنجليزية، واتجاها مكسورا، وجداول مصدرة، ليفهموا السلوك البشري. والثمن هو الدقة."
                 )}
               </p>
             </div>
             <div className="md:col-span-7">
               <div className="grid gap-3 sm:grid-cols-2">
                 {[
-                  { i: Languages, t: t("Bilingual is an afterthought", "ثنائيّةُ اللغةِ متأخّرةٌ دائمًا"), d: t("RTL bolted on, Arabic typography neglected.", "اتّجاهٌ مُلصَقٌ، وطباعةٌ عربيّةٌ مُهملَة.") },
-                  { i: Database, t: t("Data lives in 6 places", "البياناتُ في ستّةِ أماكن"), d: t("Spreadsheets, drives, custom scripts, repeat.", "جداول، أقراص، نصوصٌ مخصّصة، وتكرار.") },
-                  { i: Eye, t: t("Sessions are fragile", "الجلساتُ هشّة"), d: t("Hardware, browser quirks, lost trials.", "أعطالُ الأجهزة، وغرابةُ المتصفّح، وفقدانُ المحاولات.") },
-                  { i: Shield, t: t("Compliance is unclear", "الامتثالُ غامض"), d: t("Cross-border PII rules are inconsistent.", "قواعدُ البياناتِ عبر الحدودِ متضاربة.") },
+                  { i: Languages, t: t("Bilingual is an afterthought", "ثنائية اللغة متأخرة دائما"), d: t("RTL bolted on, Arabic typography neglected.", "اتجاه ملصق، وطباعة عربية مهملة.") },
+                  { i: Database, t: t("Data lives in 6 places", "البيانات في ستة أماكن"), d: t("Spreadsheets, drives, custom scripts, repeat.", "جداول، أقراص، نصوص مخصصة، وتكرار.") },
+                  { i: Eye, t: t("Sessions are fragile", "الجلسات هشة"), d: t("Hardware, browser quirks, lost trials.", "أعطال الأجهزة، وغرابة المتصفح، وفقدان المحاولات.") },
+                  { i: Shield, t: t("Compliance is unclear", "الامتثال غامض"), d: t("Cross-border PII rules are inconsistent.", "قواعد البيانات عبر الحدود متضاربة.") },
                 ].map(({ i: Icon, t: title, d }) => (
-                  <div key={title} className="precision-card p-4 tactile">
+                  <div key={title} className="precision-card p-5 tactile">
                     <Icon className="h-5 w-5 text-gold" strokeWidth={1.75} />
                     <div className="mt-3 font-display text-[15px] font-semibold">{title}</div>
                     <div className="mt-1 text-[13px] leading-[1.55] text-muted-foreground">{d}</div>
@@ -216,69 +197,63 @@ function Landing() {
 
         {/* ── Solution / How it works ─────────────────────────── */}
         <section className="border-y border-border bg-surface-2">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
             <div className="max-w-2xl">
               <Kicker>{t("How it works", "كيف يعمل")}</Kicker>
               <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
-                {t("One workspace, three calm steps.", "مساحةٌ واحدة، ثلاثُ خطواتٍ هادئة.")}
+                {t("One workspace, three calm steps.", "مساحة واحدة، ثلاث خطوات هادئة.")}
               </h2>
             </div>
             <ol className="mt-10 grid gap-4 md:grid-cols-3 md:gap-5">
               {[
-                { n: "01", t: t("Design the experiment", "صمّم التجربة"), d: t("Bilingual stimulus library, drag-and-drop trials, version control.", "مكتبةُ مثيراتٍ ثنائيّة، محاولاتٌ بالسحب، وتحكّمٌ بالإصدارات.") },
-                { n: "02", t: t("Run the session", "أجرِ الجلسة"), d: t("Eye-tracking, RT, audio — captured in one calm canvas.", "تتبّعُ العين، زمنُ الاستجابة، الصوت — في لوحةٍ هادئة.") },
-                { n: "03", t: t("Read the evidence", "اقرأ الدّليل"), d: t("Auto-cleaned data, AI-assisted summaries, exportable reports.", "بياناتٌ منقّاة، خلاصاتٌ بمعونةِ الذكاء، وتقاريرُ قابلةٌ للتصدير.") },
+                { n: "01", icon: Layers, t: t("Design the experiment", "صمم التجربة"), d: t("Bilingual stimulus library, drag-and-drop trials, version control.", "مكتبة مثيرات ثنائية، محاولات بالسحب، وتحكم بالإصدارات.") },
+                { n: "02", icon: Activity, t: t("Run the session", "أجر الجلسة"), d: t("Eye-tracking, RT, audio — captured in one calm canvas.", "تتبع العين، زمن الاستجابة، الصوت — في لوحة هادئة.") },
+                { n: "03", icon: LineChart, t: t("Read the evidence", "اقرأ الدليل"), d: t("Auto-cleaned data, AI-assisted summaries, exportable reports.", "بيانات منقاة، خلاصات بمعونة الذكاء، وتقارير قابلة للتصدير.") },
               ].map((s) => (
                 <li key={s.n} className="precision-card grad-card p-6 tactile">
-                  <span className="font-mono text-[11px] tracking-wider text-gold">{s.n}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[11px] tracking-wider text-gold">{s.n}</span>
+                    <s.icon className="h-4 w-4 text-muted-foreground" />
+                  </div>
                   <div className="mt-3 font-display text-lg font-semibold">{s.t}</div>
                   <p className="mt-2 text-[13px] leading-[1.6] text-muted-foreground">{s.d}</p>
                 </li>
               ))}
             </ol>
 
-            <div className="precision-card mt-10 overflow-hidden">
-              <img src={dashboardImg} alt="Biruni dashboard preview" className="aspect-[16/9] w-full object-cover" loading="lazy" />
+            {/* Workspace preview — pure tokens */}
+            <div className="mt-10">
+              <WorkspacePreview rtl={rtl} t={t} />
             </div>
           </div>
         </section>
 
         {/* ── Personas ────────────────────────────────────────── */}
-        <section id="personas" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-          <div className="flex items-end justify-between gap-6">
-            <div className="max-w-xl">
-              <Kicker>{t("For teams", "للفِرق")}</Kicker>
-              <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
-                {t("Built for the way your discipline works.", "مبنيٌّ على طريقةِ عملِ تخصّصك.")}
-              </h2>
-            </div>
+        <section id="personas" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="max-w-xl">
+            <Kicker>{t("For teams", "للفرق")}</Kicker>
+            <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
+              {t("Built for the way your discipline works.", "مبني على طريقة عمل تخصصك.")}
+            </h2>
           </div>
 
           <div className="mt-10 grid gap-5 md:grid-cols-3">
             {[
-              { img: researcherImg, color: "research", icon: Beaker, kicker: t("Research", "بحث"),
-                t: t("Designed for principal investigators", "مصمَّمٌ للباحثين الرئيسيّين"),
-                d: t("Pre-registration, IRB-friendly logs, reproducible pipelines.", "تسجيلٌ مسبق، سجلّاتٌ ودودة للجان الأخلاق، أنابيبُ تحليلٍ قابلةٌ للنّسخ."),
+              { color: "research", icon: Beaker, kicker: t("Research", "بحث"),
+                t: t("Designed for principal investigators", "مصمم للباحثين الرئيسيين"),
+                d: t("Pre-registration, IRB-friendly logs, reproducible pipelines.", "تسجيل مسبق، سجلات ودودة للجان الأخلاق، وأنابيب تحليل قابلة للنسخ."),
                 points: [t("Stimulus library", "مكتبة المثيرات"), t("Version control", "إدارة الإصدارات"), t("Open data exports", "تصدير البيانات")] },
-              { img: studentsImg, color: "education", icon: GraduationCap, kicker: t("Education", "تعليم"),
-                t: t("Calm classrooms, measurable learning", "فصولٌ هادئة، تعلُّمٌ قابلٌ للقياس"),
-                d: t("Cohort dashboards, attention metrics, progress timelines.", "لوحاتُ المجموعات، مقاييسُ الانتباه، خطوطُ التقدّم الزمنيّة."),
+              { color: "education", icon: GraduationCap, kicker: t("Education", "تعليم"),
+                t: t("Calm classrooms, measurable learning", "فصول هادئة، تعلم قابل للقياس"),
+                d: t("Cohort dashboards, attention metrics, progress timelines.", "لوحات المجموعات، مقاييس الانتباه، خطوط التقدم الزمنية."),
                 points: [t("Cohort dashboards", "لوحات المجموعات"), t("Attention analytics", "تحليلات الانتباه"), t("Curriculum templates", "قوالب المنهج")] },
-              { img: clinicianImg, color: "clinical", icon: Stethoscope, kicker: t("Clinical", "سريريّ"),
-                t: t("Evidence-based practice, in your clinic", "ممارسةٌ مبنيّةٌ على الدّليل، في عيادتك"),
-                d: t("Patient timelines, secure notes, validated assessments.", "خطوطُ المريض الزمنيّة، ملاحظاتٌ آمنة، تقييماتٌ موثَّقة."),
-                points: [t("Validated assessments", "تقييمات موثَّقة"), t("Patient timeline", "خط زمني للمريض"), t("HIPAA-aligned", "متوافق مع HIPAA")] },
+              { color: "clinical", icon: Stethoscope, kicker: t("Clinical", "سريري"),
+                t: t("Evidence-based practice, in your clinic", "ممارسة مبنية على الدليل، في عيادتك"),
+                d: t("Patient timelines, secure notes, validated assessments.", "خطوط المريض الزمنية، ملاحظات آمنة، تقييمات موثقة."),
+                points: [t("Validated assessments", "تقييمات موثقة"), t("Patient timeline", "خط زمني للمريض"), t("HIPAA-aligned", "متوافق مع HIPAA")] },
             ].map((p) => (
               <article key={p.kicker} className="precision-card group flex flex-col overflow-hidden tactile">
-                <div className="relative">
-                  <img src={p.img} alt="" className="aspect-[16/10] w-full object-cover" loading="lazy" />
-                  <span
-                    className="absolute start-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2 py-1 font-mono text-[10px] uppercase tracking-wider backdrop-blur"
-                    style={{ color: `var(--${p.color})` }}
-                  >
-                    <p.icon className="h-3 w-3" /> {p.kicker}
-                  </span>
-                </div>
+                <PersonaHeader color={p.color} icon={p.icon} kicker={p.kicker} />
                 <div className="flex flex-1 flex-col p-5">
                   <h3 className="font-display text-lg font-semibold tracking-tight">{p.t}</h3>
                   <p className="mt-2 text-[13px] leading-[1.6] text-muted-foreground">{p.d}</p>
@@ -297,38 +272,46 @@ function Landing() {
 
         {/* ── Bilingual + AI showcase ─────────────────────────── */}
         <section id="bilingual" className="border-y border-border bg-surface-2">
-          <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 sm:py-24 md:grid-cols-2 md:gap-12 lg:px-8">
+          <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 sm:py-28 md:grid-cols-2 md:gap-12 lg:px-8">
             <div className="precision-card overflow-hidden">
-              <img src={aiImg} alt="AI assistant" className="aspect-[4/3] w-full object-cover" loading="lazy" />
+              <div className="grad-gold p-6 sm:p-8">
+                <div className="flex items-center gap-2">
+                  <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground"><Cpu className="h-3.5 w-3.5" /></span>
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">AI Assistant · Summary</span>
+                </div>
+                <p className="mt-4 font-display text-[18px] leading-snug">
+                  "Across 412 trials, recognition latency improved 14% on Arabic stimuli versus baseline."
+                </p>
+              </div>
               <div className="grid grid-cols-2 border-t border-border">
                 <div className="p-5">
                   <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">English</div>
-                  <p className="mt-2 font-display text-[15px] leading-snug">"Participants showed 14% faster recognition on Arabic stimuli."</p>
+                  <p className="mt-2 text-[14px] leading-snug">"Participants showed 14% faster recognition on Arabic stimuli."</p>
                 </div>
                 <div dir="rtl" className="border-is p-5 font-arabic">
-                  <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">العربيّة</div>
-                  <p className="mt-2 text-[15px] leading-snug">«تحسّنَ التعرّفُ على المثيراتِ العربيّةِ بنسبةِ 14٪.»</p>
+                  <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">العربية</div>
+                  <p className="mt-2 text-[14px] leading-snug">«تحسن التعرف على المثيرات العربية بنسبة 14٪.»</p>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col justify-center">
-              <Kicker>{t("Bilingual & intelligent", "ثنائيّة وذكيّة")}</Kicker>
+              <Kicker>{t("Bilingual & intelligent", "ثنائية وذكية")}</Kicker>
               <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
-                {t("Arabic & English, treated as equals.", "العربيّة والإنجليزيّة، مُعامَلتانِ كنِظراء.")}
+                {t("Arabic & English, treated as equals.", "العربية والإنجليزية، معاملتان كنظراء.")}
               </h2>
               <p className={`mt-4 text-[15px] leading-[1.65] text-muted-foreground ${rtl ? "font-arabic" : ""}`}>
                 {t(
                   "Every component is bidirectional, every type-system tuned for Arabic optical balance, and every report can be read in either language without translation loss.",
-                  "كلُّ مكوّنٍ ثنائيُّ الاتّجاه، وكلُّ نظامِ كتابةٍ مضبوطٌ لتوازنٍ بصريٍّ عربيّ، وكلُّ تقريرٍ يُقرَأ بأيِّ لغةٍ دون فقدان."
+                  "كل مكون ثنائي الاتجاه، وكل نظام كتابة مضبوط لتوازن بصري عربي، وكل تقرير يقرأ بأي لغة دون فقدان."
                 )}
               </p>
               <div className="mt-6 grid grid-cols-2 gap-3">
                 {[
                   { i: Cpu, t: t("AI summaries", "خلاصات بالذكاء") },
-                  { i: Eye, t: t("Eye-tracking ready", "جاهز لتتبّع العين") },
-                  { i: Shield, t: t("Region-aware data", "بياناتٌ تراعي المنطقة") },
-                  { i: Languages, t: t("RTL by default", "اتّجاهٌ افتراضيّ من اليمين") },
+                  { i: Eye, t: t("Eye-tracking ready", "جاهز لتتبع العين") },
+                  { i: Lock, t: t("Region-aware data", "بيانات تراعي المنطقة") },
+                  { i: Languages, t: t("RTL by default", "اتجاه افتراضي من اليمين") },
                 ].map(({ i: I, t: tx }) => (
                   <div key={tx} className="flex items-center gap-2.5 rounded-md border border-border bg-background p-3 text-[13px] tactile">
                     <I className="h-4 w-4 text-gold" /> {tx}
@@ -340,12 +323,12 @@ function Landing() {
         </section>
 
         {/* ── Quote ───────────────────────────────────────────── */}
-        <section className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:px-8">
+        <section className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-28 lg:px-8">
           <Quote className="mx-auto h-6 w-6 text-gold" />
-          <blockquote className={`mt-5 font-display text-[22px] leading-[1.4] tracking-[-0.01em] sm:text-[30px] ${rtl ? "font-arabic" : ""}`}>
+          <blockquote className={`mt-5 font-display text-[24px] leading-[1.4] tracking-[-0.01em] sm:text-[32px] ${rtl ? "font-arabic" : ""}`}>
             {t(
               "“Biruni is the first tool that didn't ask my Arabic stimuli to apologize for existing.”",
-              "«بيروني أوّلُ أداةٍ لم تطلب من مثيراتي العربيّةِ أن تعتذرَ عن وجودها.»"
+              "«بيروني أول أداة لم تطلب من مثيراتي العربية أن تعتذر عن وجودها.»"
             )}
           </blockquote>
           <div className="mt-5 text-[12px] text-muted-foreground">
@@ -353,21 +336,21 @@ function Landing() {
           </div>
         </section>
 
-        {/* ── Pricing teaser ──────────────────────────────────── */}
+        {/* ── Pricing ─────────────────────────────────────────── */}
         <section id="pricing" className="border-t border-border bg-surface-2">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
             <div className="max-w-2xl">
               <Kicker>{t("Pricing", "الأسعار")}</Kicker>
               <h2 className={`mt-3 font-display text-[28px] font-semibold leading-tight tracking-[-0.02em] sm:text-[36px] ${rtl ? "font-arabic font-bold" : ""}`}>
-                {t("Calm pricing, scaled to your team.", "أسعارٌ هادئة، تتناسبُ مع فريقك.")}
+                {t("Calm pricing, scaled to your team.", "أسعار هادئة، تتناسب مع فريقك.")}
               </h2>
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {[
-                { name: t("Lab", "مختبر"), price: "$49", per: t("/seat / month", "/مقعد / شهر"), tag: t("For small labs", "للمختبرات الصغيرة"), feats: ["3 active studies", "10 GB data", "Email support"] },
-                { name: t("Department", "قسم"), price: "$129", per: t("/seat / month", "/مقعد / شهر"), tag: t("Most popular", "الأكثر شيوعًا"), highlight: true, feats: ["Unlimited studies", "100 GB data", "AI summaries", "Priority support"] },
-                { name: t("Institution", "مؤسسة"), price: t("Custom", "مخصّص"), per: "", tag: t("For universities & ministries", "للجامعات والوزارات"), feats: ["SSO & SAML", "Region-locked data", "Dedicated success", "On-prem option"] },
+                { name: t("Lab", "مختبر"), price: "$49", per: t("/seat / month", "/مقعد / شهر"), tag: t("For small labs", "للمختبرات الصغيرة"), feats: [t("3 active studies", "٣ دراسات نشطة"), t("10 GB data", "١٠ غيغابايت"), t("Email support", "دعم بالبريد")] },
+                { name: t("Department", "قسم"), price: "$129", per: t("/seat / month", "/مقعد / شهر"), tag: t("Most popular", "الأكثر شيوعا"), highlight: true, feats: [t("Unlimited studies", "دراسات غير محدودة"), t("100 GB data", "١٠٠ غيغابايت"), t("AI summaries", "خلاصات بالذكاء"), t("Priority support", "دعم ذو أولوية")] },
+                { name: t("Institution", "مؤسسة"), price: t("Custom", "مخصص"), per: "", tag: t("For universities & ministries", "للجامعات والوزارات"), feats: [t("SSO & SAML", "تسجيل دخول موحد"), t("Region-locked data", "بيانات مقيدة جغرافيا"), t("Dedicated success", "مدير نجاح مخصص"), t("On-prem option", "خيار محلي")] },
               ].map((tier) => (
                 <div key={tier.name} className={`precision-card relative flex flex-col p-6 ${tier.highlight ? "ring-2 ring-gold" : ""}`}>
                   {tier.highlight && (
@@ -399,27 +382,27 @@ function Landing() {
 
         {/* ── Final CTA ───────────────────────────────────────── */}
         <section id="cta" className="relative overflow-hidden bg-primary text-primary-foreground">
+          <div aria-hidden className="absolute inset-0 opacity-[0.08] grid-fine" />
           <div
             aria-hidden
-            className="absolute inset-0 opacity-30"
-            style={{ backgroundImage: `url(${eyetrackImg})`, backgroundSize: "cover", backgroundPosition: "center", filter: "saturate(0.6)" }}
+            className="absolute -top-32 end-[-10%] h-[420px] w-[420px] rounded-full"
+            style={{ background: "radial-gradient(closest-side, color-mix(in srgb, var(--gold) 55%, transparent), transparent)" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/70" />
-          <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+          <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
             <div className="max-w-2xl">
               <h2 className={`font-display text-[32px] font-semibold leading-tight tracking-[-0.02em] sm:text-[44px] ${rtl ? "font-arabic font-bold" : ""}`}>
                 {t("Bring calm precision to your behavioral work.",
-                   "أحضر الدّقّةَ الهادئةَ إلى عملِك السلوكيّ.")}
+                   "أحضر الدقة الهادئة إلى عملك السلوكي.")}
               </h2>
               <p className={`mt-4 max-w-xl text-[15px] leading-[1.65] text-primary-foreground/80 ${rtl ? "font-arabic" : ""}`}>
                 {t("Join the early-access cohort. Onboarding sessions in Arabic and English, every week.",
-                   "انضم إلى مجموعةِ الوصولِ المبكّر. جلساتُ التهيئةِ بالعربيّة والإنجليزيّة كلَّ أسبوع.")}
+                   "انضم إلى مجموعة الوصول المبكر. جلسات التهيئة بالعربية والإنجليزية كل أسبوع.")}
               </p>
-              <form className="mt-7 flex max-w-lg flex-col gap-2 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
+              <form className="mt-8 flex max-w-lg flex-col gap-2 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
                 <input
                   type="email"
                   required
-                  placeholder={t("you@institution.edu", "you@institution.edu")}
+                  placeholder="you@institution.edu"
                   className="h-11 flex-1 rounded-md border border-white/20 bg-white/10 px-3 text-[14px] text-primary-foreground placeholder:text-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-gold"
                 />
                 <button className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-gold px-4 text-[13px] font-semibold text-accent-foreground tactile">
@@ -440,15 +423,15 @@ function Landing() {
               <div className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
                 <Brain className="h-4 w-4" />
               </div>
-              <span className="font-display text-[15px] font-semibold tracking-tight" style={{ fontFamily: "Inter" }}>Biruni</span>
+              <span className="font-display text-[15px] font-semibold tracking-tight">Biruni</span>
             </div>
             <p className="mt-4 max-w-sm text-[13px] leading-[1.6] text-muted-foreground">
               {t("A calm bilingual workspace for behavioral science across the MENA region.",
-                 "مساحةُ عملٍ هادئةٌ ثنائيّةُ اللغةِ للعلومِ السلوكيّةِ في الشرقِ الأوسط.")}
+                 "مساحة عمل هادئة ثنائية اللغة للعلوم السلوكية في الشرق الأوسط.")}
             </p>
           </div>
           {[
-            { h: t("Product", "المنتج"), l: [["#product", t("Overview", "نظرة عامة")], ["#personas", t("For teams", "للفِرق")], ["#pricing", t("Pricing", "الأسعار")], ["/deck", t("Pitch deck", "العرض")]] },
+            { h: t("Product", "المنتج"), l: [["#product", t("Overview", "نظرة عامة")], ["#personas", t("For teams", "للفرق")], ["#pricing", t("Pricing", "الأسعار")]] },
             { h: t("Company", "الشركة"), l: [["/system", t("Design system", "نظام التصميم")], ["#cta", t("Contact", "تواصل")]] },
           ].map((col) => (
             <div key={col.h}>
@@ -474,11 +457,212 @@ function Landing() {
   );
 }
 
+/* ───────────── Helper components (pure design-system) ───────────── */
+
 function Kicker({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2">
       <span className="h-px w-6 bg-gold" />
       <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold">{children}</span>
     </span>
+  );
+}
+
+function HeroInstrument({ rtl, t }: { rtl: boolean; t: (en: string, ar: string) => string }) {
+  return (
+    <div className="precision-card relative overflow-hidden">
+      {/* Top status bar */}
+      <div className="flex items-center justify-between border-b border-border bg-surface-2 px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-success" />
+          <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Session · Live</span>
+        </div>
+        <span className="font-mono text-[10px] text-muted-foreground num-tab">00:14:32</span>
+      </div>
+
+      {/* Body */}
+      <div className="grad-card p-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("Trial", "محاولة")}</div>
+            <div className="mt-0.5 font-display text-[15px] font-semibold">{t("Arabic word recognition", "التعرف على الكلمات العربية")}</div>
+          </div>
+          <span className="rounded-md bg-gold-soft px-2 py-1 font-mono text-[10px] uppercase tracking-wider text-accent-foreground">N=412</span>
+        </div>
+
+        {/* Sparkline-like bars */}
+        <div className="mt-5 flex h-24 items-end gap-1">
+          {[40, 62, 48, 70, 55, 78, 66, 84, 72, 90, 80, 95, 88, 76, 82, 70, 92, 86].map((h, i) => (
+            <div
+              key={i}
+              className="flex-1 rounded-sm"
+              style={{
+                height: `${h}%`,
+                background: i === 11 ? "var(--gold)" : "color-mix(in srgb, var(--primary) 22%, transparent)",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Metrics row */}
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          {[
+            { k: t("Mean RT", "متوسط الزمن"), v: "612ms", up: true },
+            { k: t("Accuracy", "الدقة"), v: "94.2%", up: true },
+            { k: t("Trials", "المحاولات"), v: "412", up: false },
+          ].map((m) => (
+            <div key={m.k} className="rounded-md border border-border bg-background p-3">
+              <div className="font-mono text-[9px] uppercase tracking-wider text-muted-foreground">{m.k}</div>
+              <div className="mt-1 flex items-center gap-1.5">
+                <span className="font-display text-[16px] font-semibold tracking-tight num-tab">{m.v}</span>
+                {m.up && <span className="font-mono text-[10px] text-success">▲</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer chip */}
+      <div className="flex items-center justify-between border-t border-border bg-surface-2 px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span className="grid h-6 w-6 place-items-center rounded-full bg-primary text-primary-foreground">
+            <Brain className="h-3 w-3" />
+          </span>
+          <span className="font-mono text-[10px] text-muted-foreground">Biruni · Riyadh Behavioral Lab</span>
+        </div>
+        <span className="grid h-7 w-7 place-items-center rounded-full bg-gold text-accent-foreground">
+          <ChevronRight className={`h-3.5 w-3.5 ${rtl ? "rotate-180" : ""}`} />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function WorkspacePreview({ rtl, t }: { rtl: boolean; t: (en: string, ar: string) => string }) {
+  return (
+    <div className="precision-card overflow-hidden">
+      <div className="grid md:grid-cols-12">
+        {/* Sidebar */}
+        <aside className="hidden border-ie bg-surface-2 p-4 md:col-span-3 md:block">
+          <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("Studies", "الدراسات")}</div>
+          <ul className="mt-3 space-y-1 text-[13px]">
+            {[
+              [t("Arabic word recognition", "التعرف على الكلمات"), true],
+              [t("Attention in classrooms", "الانتباه في الفصول"), false],
+              [t("Clinical baseline", "قاعدة سريرية"), false],
+              [t("Eye-tracking pilot", "تجربة تتبع العين"), false],
+            ].map(([label, active]) => (
+              <li
+                key={label as string}
+                className={`flex items-center justify-between rounded-md px-2 py-1.5 ${active ? "bg-background ring-1 ring-border" : ""}`}
+              >
+                <span className={active ? "text-foreground" : "text-muted-foreground"}>{label as string}</span>
+                {active && <span className="h-1.5 w-1.5 rounded-full bg-gold" />}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("Tools", "أدوات")}</div>
+          <ul className="mt-3 space-y-1 text-[13px] text-muted-foreground">
+            {[[Activity, t("Sessions", "الجلسات")], [LineChart, t("Analytics", "التحليلات")], [FileText, t("Reports", "التقارير")], [Zap, t("Automations", "التشغيل الآلي")]].map(([Icon, label], i) => (
+              <li key={i} className="flex items-center gap-2 px-2 py-1.5">
+                <Icon className="h-3.5 w-3.5" /> <span>{label as string}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        {/* Main panel */}
+        <div className="md:col-span-9">
+          <div className="flex items-center justify-between border-b border-border px-5 py-3">
+            <div className="flex items-center gap-2">
+              <span className="font-display text-[14px] font-semibold">{t("Arabic word recognition", "التعرف على الكلمات العربية")}</span>
+              <span className="rounded-full bg-gold-soft px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-accent-foreground">v 1.4</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="hidden font-mono text-[10px] text-muted-foreground sm:inline">412 {t("participants", "مشاركا")}</span>
+              <span className="grid h-6 w-6 place-items-center rounded-full bg-foreground text-background">
+                <ChevronRight className={`h-3 w-3 ${rtl ? "rotate-180" : ""}`} />
+              </span>
+            </div>
+          </div>
+
+          <div className="grid gap-4 p-5 sm:grid-cols-3">
+            {[
+              { k: t("Latency Δ", "فرق الزمن"), v: "−14%", tone: "success" as const },
+              { k: t("Accuracy", "الدقة"), v: "94.2%", tone: "muted" as const },
+              { k: t("Drop-off", "التسرب"), v: "2.1%", tone: "warning" as const },
+            ].map((m) => (
+              <div key={m.k} className="rounded-md border border-border bg-surface p-4">
+                <div className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{m.k}</div>
+                <div className="mt-2 flex items-baseline gap-2">
+                  <span className="font-display text-2xl font-semibold tracking-tight num-tab">{m.v}</span>
+                  <span
+                    className="font-mono text-[10px]"
+                    style={{ color: m.tone === "success" ? "var(--success)" : m.tone === "warning" ? "var(--warning)" : "var(--muted-foreground)" }}
+                  >
+                    {m.tone === "success" ? "▲" : m.tone === "warning" ? "▲" : "—"}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Chart strip */}
+          <div className="px-5 pb-5">
+            <div className="rounded-md border border-border bg-surface p-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">{t("Recognition latency · last 18 sessions", "زمن التعرف · آخر ١٨ جلسة")}</span>
+                <span className="font-mono text-[10px] text-muted-foreground num-tab">ms</span>
+              </div>
+              <svg viewBox="0 0 600 120" className="mt-3 h-24 w-full">
+                <defs>
+                  <linearGradient id="grad-line" x1="0" x2="1">
+                    <stop offset="0%" stopColor="var(--primary)" />
+                    <stop offset="100%" stopColor="var(--gold)" />
+                  </linearGradient>
+                </defs>
+                {[20, 40, 60, 80, 100].map((y) => (
+                  <line key={y} x1="0" x2="600" y1={y} y2={y} stroke="var(--border)" strokeWidth="1" />
+                ))}
+                <polyline
+                  fill="none"
+                  stroke="url(#grad-line)"
+                  strokeWidth="2.5"
+                  points="0,80 35,72 70,78 105,60 140,66 175,52 210,58 245,44 280,50 315,38 350,44 385,30 420,36 455,28 490,34 525,22 560,28 600,18"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PersonaHeader({ color, icon: Icon, kicker }: { color: string; icon: any; kicker: string }) {
+  return (
+    <div
+      className="relative h-32 overflow-hidden"
+      style={{
+        background: `linear-gradient(135deg, color-mix(in srgb, var(--${color}) 18%, var(--surface)), var(--surface) 70%)`,
+      }}
+    >
+      <div aria-hidden className="absolute inset-0 grid-fine opacity-50" />
+      <div className="relative flex h-full items-end justify-between p-4">
+        <span
+          className="grid h-12 w-12 place-items-center rounded-xl bg-background ring-1 ring-border"
+          style={{ color: `var(--${color})` }}
+        >
+          <Icon className="h-5 w-5" strokeWidth={1.75} />
+        </span>
+        <span
+          className="inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2 py-1 font-mono text-[10px] uppercase tracking-wider backdrop-blur"
+          style={{ color: `var(--${color})` }}
+        >
+          {kicker}
+        </span>
+      </div>
+    </div>
   );
 }
