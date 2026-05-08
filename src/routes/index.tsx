@@ -88,65 +88,102 @@ function Token({ k, v }: { k: string; v: string }) {
 function DesignSystem() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Top Bar ── */}
-      <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
-          <div className="flex items-center gap-3">
-            <Logo />
-            <div className="hidden md:block">
-              <div className="font-display text-lg leading-none text-foreground">Biruni</div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Design System · v1.0</div>
+      {/* ── Masthead ── */}
+      <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background/95 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="flex items-end justify-between gap-6 py-3">
+            <div className="flex items-end gap-4">
+              <Logo />
+              <div className="leading-none">
+                <div className="font-display text-2xl font-light tracking-tight text-foreground">Bīrūnī</div>
+                <div className="smcp mt-1 text-[10px] text-muted-foreground">Vol. I · Issue 01 · MMXXVI</div>
+              </div>
+            </div>
+            <div className="hidden text-right leading-tight md:block">
+              <div className="font-display text-sm italic text-foreground">A field manual for the behavioral sciences</div>
+              <div dir="rtl" className="font-arabic text-base text-muted-foreground">دليلٌ ميدانيٌّ لعلوم السلوك</div>
             </div>
           </div>
-          <nav className="hidden items-center gap-6 font-mono text-[11px] uppercase tracking-widest text-muted-foreground md:flex">
-            <a href="#foundations" className="hover:text-foreground">Foundations</a>
-            <a href="#color" className="hover:text-foreground">Color</a>
-            <a href="#type" className="hover:text-foreground">Type</a>
-            <a href="#components" className="hover:text-foreground">Components</a>
-            <a href="#bilingual" className="hover:text-foreground">EN · ع</a>
-            <a href="#patterns" className="hover:text-foreground">Patterns</a>
+          <nav className="flex items-center justify-between border-t border-foreground/30 py-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+            <div className="flex items-center gap-5">
+              <a href="#foundations" className="hover:text-foreground">i. Foundations</a>
+              <a href="#color" className="hover:text-foreground">ii. Color</a>
+              <a href="#type" className="hover:text-foreground">iii. Type</a>
+              <a href="#components" className="hover:text-foreground">iv. Components</a>
+              <a href="#bilingual" className="hover:text-foreground">v. EN · ع</a>
+              <a href="#patterns" className="hover:text-foreground">vi. Patterns</a>
+            </div>
+            <a href="#tokens" className="inline-flex items-center gap-1.5 text-foreground hover:text-accent">
+              <Download size={11} /> tokens.json →
+            </a>
           </nav>
-          <button className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background hover:opacity-90">
-            <Download size={14} /> Tokens
-          </button>
         </div>
       </header>
 
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 grid-paper opacity-40" />
-        <div className="absolute -right-32 top-20 h-[420px] w-[420px] rounded-full bg-accent/30 blur-3xl" />
-        <div className="absolute -left-32 bottom-0 h-[380px] w-[380px] rounded-full bg-primary/20 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl px-8 py-24 md:py-32">
-          <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            <span>A MENA-centric behavioral science platform</span>
-            <span className="opacity-40">·</span>
-            <span dir="rtl" className="font-arabic text-sm normal-case tracking-normal">منصة لعلوم السلوك في الشرق الأوسط</span>
-          </div>
-          <h1 className="mt-6 max-w-4xl font-display text-6xl font-light leading-[0.95] tracking-tight text-foreground md:text-8xl">
-            The grammar of <em className="text-accent not-italic">behavioral</em> science.
-          </h1>
-          <div dir="rtl" className="mt-4 max-w-3xl font-arabic text-3xl font-normal leading-[1.4] text-foreground md:text-5xl">
-            <span className="text-muted-foreground">قواعدُ </span>
-            <em className="not-italic text-accent">علمِ السلوك</em>
-            <span className="text-muted-foreground">.</span>
-          </div>
-          <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              A design system for researchers, educators, and clinicians. Built on scholarly
-              typography, ink-on-paper restraint, and three persona-driven accents.
+      {/* ── Cover (Hero) ── */}
+      <section className="relative overflow-hidden border-b-2 border-foreground">
+        <div className="mx-auto grid max-w-7xl grid-cols-12 gap-x-6 px-8 py-20 md:py-28">
+          {/* left rail */}
+          <aside className="col-span-12 md:col-span-2 md:border-r md:border-foreground/30 md:pr-4">
+            <div className="space-y-6 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <div>
+                <div className="text-foreground">№ 001</div>
+                <div className="mt-1">First edition</div>
+              </div>
+              <div>
+                <div className="text-foreground">Pp. 142</div>
+                <div className="mt-1">Tokens</div>
+              </div>
+              <div>
+                <div className="text-foreground">III</div>
+                <div className="mt-1">Personae</div>
+              </div>
+              <div>
+                <div className="text-foreground">EN · عر</div>
+                <div className="mt-1">LTR · RTL</div>
+              </div>
+            </div>
+          </aside>
+
+          {/* center cover */}
+          <div className="col-span-12 md:col-span-7 md:px-2">
+            <div className="rule-thick mb-6" />
+            <div className="smcp text-[11px] text-foreground">A MENA-centric platform for the behavioral sciences</div>
+            <h1 className="mt-3 font-display text-[64px] font-light leading-[0.92] tracking-[-0.025em] text-foreground md:text-[112px]">
+              The <em className="not-italic text-accent" style={{ fontStyle: "italic" }}>grammar</em>
+              <br />
+              of behavioral
+              <br />
+              science.
+            </h1>
+            <div dir="rtl" className="mt-4 font-arabic text-3xl leading-[1.4] text-foreground md:text-5xl">
+              قواعدُ <em className="not-italic text-accent">علمِ السلوك</em>.
+            </div>
+            <div className="rule-thick mt-8" />
+            <p className="dropcap mt-6 max-w-xl text-[15px] leading-[1.7] text-foreground">
+              Biruni is a working instrument for researchers, educators, and clinicians — three
+              disciplines bound by a single grammar of measurement, designed in the rhythms and
+              writing systems of the region. This volume documents its tokens, type, and patterns.
             </p>
-            <p dir="rtl" className="font-arabic text-lg leading-loose text-muted-foreground">
-              نظامُ تصميمٍ للباحثين والمعلّمين والأطبّاء. مبنيٌّ على طباعةٍ علميّةٍ وثلاثةِ ألوانٍ مميّزة لكلّ تخصّص.
+            <p dir="rtl" className="mt-4 max-w-xl font-arabic text-lg leading-[2] text-muted-foreground">
+              بيرونيُّ أداةٌ للباحثين والمعلّمين والأطبّاء — ثلاثُ مِهنٍ تجمعُها قواعدُ قياسٍ واحدة، صُمِّمت بإيقاعِ المنطقة وحرفِها.
             </p>
           </div>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">v1.0.0</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">142 tokens</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">3 personas</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">EN · ع</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">LTR · RTL</span>
-          </div>
+
+          {/* right ornament — Islamic geometric star */}
+          <aside className="col-span-12 md:col-span-3 md:border-l md:border-foreground/30 md:pl-6">
+            <Ornament />
+            <div className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              Plate i. <span className="text-foreground">Octagram</span>
+            </div>
+            <div className="mt-1 text-center font-arabic text-sm text-muted-foreground" dir="rtl">
+              نجمةٌ ثمانيّة
+            </div>
+            <div className="mt-6 border-t border-foreground/30 pt-4 text-[12px] italic leading-relaxed text-muted-foreground">
+              "Knowledge is acquired by repetition; certainty by demonstration."
+              <div className="mt-1 not-italic font-mono text-[10px] uppercase tracking-widest">— Al-Bīrūnī, c. 1030</div>
+            </div>
+          </aside>
         </div>
       </section>
 
