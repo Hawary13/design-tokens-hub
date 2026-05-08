@@ -322,9 +322,9 @@ function Main({ rtl, arabicNumerals }: { rtl: boolean; arabicNumerals: boolean }
               ))}
             </div>
           </div>
-        </div>
 
           {/* Personae */}
+
           <div className="md:col-span-12">
             <div className="grid gap-3 md:grid-cols-3">
               {[
