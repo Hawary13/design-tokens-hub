@@ -24,14 +24,17 @@ export const Route = createFileRoute("/")({
 
 /* ────────────────────────────────────────────────────────────────────── */
 
-function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children: React.ReactNode }) {
+function Section({ id, eyebrow, title, titleAr, children }: { id: string; eyebrow: string; title: string; titleAr?: string; children: React.ReactNode }) {
   return (
     <section id={id} className="border-t border-border py-20">
       <div className="mx-auto max-w-7xl px-8">
-        <header className="mb-10 grid gap-6 md:grid-cols-[280px_1fr] md:items-end">
+        <header className="mb-10 grid gap-6 md:grid-cols-[320px_1fr] md:items-end">
           <div>
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">{eyebrow}</div>
             <h2 className="mt-3 font-display text-4xl font-light text-foreground md:text-5xl">{title}</h2>
+            {titleAr && (
+              <div dir="rtl" className="mt-2 font-arabic text-2xl text-muted-foreground">{titleAr}</div>
+            )}
           </div>
           <div className="h-px w-full bg-border md:mb-3" />
         </header>
@@ -99,21 +102,33 @@ function DesignSystem() {
         <div className="absolute -right-32 top-20 h-[420px] w-[420px] rounded-full bg-accent/30 blur-3xl" />
         <div className="absolute -left-32 bottom-0 h-[380px] w-[380px] rounded-full bg-primary/20 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-8 py-24 md:py-32">
-          <div className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
-            بيروني · A MENA-centric behavioral science platform
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            <span>A MENA-centric behavioral science platform</span>
+            <span className="opacity-40">·</span>
+            <span dir="rtl" className="font-arabic text-sm normal-case tracking-normal">منصة لعلوم السلوك في الشرق الأوسط</span>
           </div>
           <h1 className="mt-6 max-w-4xl font-display text-6xl font-light leading-[0.95] tracking-tight text-foreground md:text-8xl">
             The grammar of <em className="text-accent not-italic">behavioral</em> science.
           </h1>
-          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            A design system for researchers, educators, and clinicians. Built on scholarly typography,
-            ink-on-paper restraint, and three persona-driven accents.
-          </p>
+          <div dir="rtl" className="mt-4 max-w-3xl font-arabic text-3xl font-normal leading-[1.4] text-foreground md:text-5xl">
+            <span className="text-muted-foreground">قواعدُ </span>
+            <em className="not-italic text-accent">علمِ السلوك</em>
+            <span className="text-muted-foreground">.</span>
+          </div>
+          <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              A design system for researchers, educators, and clinicians. Built on scholarly
+              typography, ink-on-paper restraint, and three persona-driven accents.
+            </p>
+            <p dir="rtl" className="font-arabic text-lg leading-loose text-muted-foreground">
+              نظامُ تصميمٍ للباحثين والمعلّمين والأطبّاء. مبنيٌّ على طباعةٍ علميّةٍ وثلاثةِ ألوانٍ مميّزة لكلّ تخصّص.
+            </p>
+          </div>
           <div className="mt-10 flex flex-wrap gap-3">
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">v1.0.0</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">142 tokens</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">3 personas</span>
-            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">light · dark</span>
+            <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">EN · ع</span>
             <span className="rounded-full border border-border bg-card px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">LTR · RTL</span>
           </div>
         </div>
