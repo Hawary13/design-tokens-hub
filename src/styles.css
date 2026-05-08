@@ -175,6 +175,14 @@
     text-rendering: optimizeLegibility;
   }
   h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.018em; }
+
+  /* Bilingual Bridge — Arabic at 1.1× for optical parity */
+  :is([dir="rtl"], .font-arabic) { font-feature-settings: "ss01", "calt"; }
+  .font-arabic { font-size: 1.1em; line-height: 1.55; }
+  [dir="rtl"] :where(p, span, h1, h2, h3, h4, h5, h6, button, a, label, td, th, div) {
+    /* slight optical lift for Arabic */
+    letter-spacing: 0;
+  }
 }
 
 @layer utilities {
@@ -184,7 +192,7 @@
   .num-tab { font-variant-numeric: tabular-nums lining-nums; }
   .num-old { font-variant-numeric: oldstyle-nums proportional-nums; }
 
-  /* Logical-property helpers (for graceful RTL mirroring) */
+  /* Logical properties — physical → logical */
   .pis-3 { padding-inline-start: 0.75rem; }
   .pie-3 { padding-inline-end:   0.75rem; }
   .ms-2  { margin-inline-start:  0.5rem; }
@@ -192,35 +200,54 @@
   .border-ie { border-inline-end: 1px solid var(--color-border); }
   .border-is { border-inline-start: 1px solid var(--color-border); }
 
-  /* Refined gradients — Stripe-style desert wash */
+  /* The Precision Card — exact spec */
+  .precision-card {
+    background: var(--color-surface);
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.10), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  }
+  .dark .precision-card {
+    border-color: var(--color-border);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.45), 0 2px 4px -2px rgb(0 0 0 / 0.30);
+  }
+
+  /* Subtle washes — never loud */
   .grad-canvas {
     background:
-      radial-gradient(1200px 600px at 80% -10%, color-mix(in oklab, var(--gold) 12%, transparent), transparent 60%),
-      radial-gradient(900px 500px at -10% 100%, color-mix(in oklab, var(--research) 10%, transparent), transparent 55%),
+      radial-gradient(1100px 520px at 88% -8%, color-mix(in srgb, var(--gold) 10%, transparent), transparent 55%),
+      radial-gradient(800px 460px at -8% 100%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 55%),
       var(--color-canvas);
   }
   .grad-card {
-    background: linear-gradient(180deg,
-      color-mix(in oklab, var(--color-surface) 100%, transparent),
-      color-mix(in oklab, var(--color-surface-2) 100%, transparent));
+    background: linear-gradient(180deg, var(--color-surface), var(--color-surface-2));
   }
   .grad-gold {
     background: linear-gradient(135deg,
-      color-mix(in oklab, var(--gold) 22%, var(--color-surface)),
-      color-mix(in oklab, var(--gold) 4%, var(--color-surface)) 60%,
+      color-mix(in srgb, var(--gold) 28%, var(--color-surface)),
+      color-mix(in srgb, var(--gold) 6%, var(--color-surface)) 65%,
       var(--color-surface));
   }
   .grid-fine {
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px);
+      linear-gradient(to right, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 1px);
     background-size: 24px 24px;
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
   }
-  /* Tactile micro-interaction — subtle shadow + lift */
-  .tactile { transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease; }
+
+  /* Calm Motion — 240ms / cubic-bezier(.4,0,.2,1) */
+  .calm { transition: transform var(--dur-calm) var(--ease-calm),
+                       box-shadow var(--dur-calm) var(--ease-calm),
+                       background-color var(--dur-calm) var(--ease-calm),
+                       border-color var(--dur-calm) var(--ease-calm),
+                       color var(--dur-calm) var(--ease-calm); }
+  .tactile { transition: transform var(--dur-calm) var(--ease-calm),
+                          box-shadow var(--dur-calm) var(--ease-calm),
+                          background-color var(--dur-calm) var(--ease-calm); }
   .tactile:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   .tactile:active { transform: translateY(0); }
 
-  .ring-focus { outline: 2px solid var(--ring); outline-offset: 2px; }
+  .ring-focus { outline: 2px solid var(--color-ring); outline-offset: 2px; box-shadow: var(--shadow-glow); }
 }
+
