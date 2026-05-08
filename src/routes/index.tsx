@@ -88,6 +88,7 @@ function DesignSystem() {
             <a href="#color" className="hover:text-foreground">Color</a>
             <a href="#type" className="hover:text-foreground">Type</a>
             <a href="#components" className="hover:text-foreground">Components</a>
+            <a href="#bilingual" className="hover:text-foreground">EN · ع</a>
             <a href="#patterns" className="hover:text-foreground">Patterns</a>
           </nav>
           <button className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-xs font-medium text-background hover:opacity-90">
