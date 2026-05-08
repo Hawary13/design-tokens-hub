@@ -775,3 +775,15 @@ function Stat({ label, value, delta, tone }: { label: string; value: string; del
     </div>
   );
 }
+
+function StatAr({ label, value, delta, tone }: { label: string; value: string; delta: string; tone?: "success" }) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-4">
+      <div className="font-arabic text-xs text-muted-foreground">{label}</div>
+      <div className="mt-2 flex items-baseline justify-between">
+        <div className="font-arabic text-3xl font-medium">{value}</div>
+        <div className={`font-arabic text-xs ${tone === "success" ? "text-success" : "text-muted-foreground"}`}>{delta}</div>
+      </div>
+    </div>
+  );
+}
