@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ComponentsCatalog from "@/components/system/ComponentsCatalog";
 import { useState } from "react";
 import {
   Search, Command, Plus, Bell, Settings, Inbox, Layers, Database,
