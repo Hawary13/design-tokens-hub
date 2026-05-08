@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import {
   ChevronLeft, ChevronRight, Maximize2, Brain, Database, Languages,
   Building2, GraduationCap, Stethoscope, Megaphone, Eye, Sparkles,
-  Shield, Zap, TrendingUp, Target, Coins, Users, Check, X, Quote,
-  Globe, Lock, Cpu, BarChart3, Mail, Phone, ArrowUpRight,
+  Shield, Coins, Check, X, Quote,
+  Lock, Cpu, BarChart3, Mail, Phone, ArrowUpRight,
 } from "lucide-react";
 
 import dashboardImg from "@/assets/deck/dashboard.jpg";
