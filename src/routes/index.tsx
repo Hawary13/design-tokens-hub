@@ -135,7 +135,7 @@ function DesignSystem() {
       </section>
 
       {/* ── Foundations ── */}
-      <Section id="foundations" eyebrow="01 · Foundations" title="Principles">
+      <Section id="foundations" eyebrow="01 · Foundations" title="Principles" titleAr="المبادئ">
         <div className="grid gap-6 md:grid-cols-3">
           {[
             { icon: Brain, title: "Cognitive clarity", body: "Every surface earns its weight. Density serves the work, not the brand." },
@@ -152,7 +152,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Color ── */}
-      <Section id="color" eyebrow="02 · Color" title="Tokens & palette">
+      <Section id="color" eyebrow="02 · Color" title="Tokens & palette" titleAr="الألوان">
         <div className="space-y-12">
           <div>
             <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Ink — primary neutral (scholarly indigo)</h3>
@@ -220,7 +220,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Typography ── */}
-      <Section id="type" eyebrow="03 · Typography" title="Type system">
+      <Section id="type" eyebrow="03 · Typography" title="Type system" titleAr="نظام الطباعة">
         <div className="grid gap-12 md:grid-cols-[1fr_320px]">
           <div className="space-y-8">
             <div className="border-b border-border pb-6">
@@ -278,7 +278,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Spacing / Radius / Shadow ── */}
-      <Section id="primitives" eyebrow="04 · Primitives" title="Spacing, radius, elevation">
+      <Section id="primitives" eyebrow="04 · Primitives" title="Spacing, radius, elevation" titleAr="المسافات والحواف">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="rounded-2xl border border-border bg-card p-6">
             <h3 className="font-display text-2xl">Spacing</h3>
@@ -322,7 +322,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Iconography ── */}
-      <Section id="icons" eyebrow="05 · Iconography" title="Lucide · 1.75 stroke">
+      <Section id="icons" eyebrow="05 · Iconography" title="Lucide · 1.75 stroke" titleAr="الأيقونات">
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="grid grid-cols-6 gap-4 md:grid-cols-12">
             {[
@@ -341,7 +341,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Components ── */}
-      <Section id="components" eyebrow="06 · Components" title="Buttons, inputs, badges, alerts">
+      <Section id="components" eyebrow="06 · Components" title="Buttons, inputs, badges, alerts" titleAr="المكوّنات">
         {/* Buttons */}
         <div className="rounded-2xl border border-border bg-card p-6">
           <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Buttons</div>
@@ -443,7 +443,7 @@ function DesignSystem() {
       </Section>
 
       {/* ── Patterns ── */}
-      <Section id="patterns" eyebrow="07 · Patterns" title="In context">
+      <Section id="patterns" eyebrow="07 · Patterns" title="In context" titleAr="في السياق">
         <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-lg">
           <div className="grid md:grid-cols-[260px_1fr]">
             {/* Sidebar */}
