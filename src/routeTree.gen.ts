@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SystemRouteImport } from './routes/system'
 import { Route as DeckRouteImport } from './routes/deck'
+import { Route as IndexRouteImport } from './routes/index'
 
 const SystemRoute = SystemRouteImport.update({
   id: '/system',
@@ -22,29 +23,38 @@ const DeckRoute = DeckRouteImport.update({
   path: '/deck',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
   '/system': typeof SystemRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
   '/system': typeof SystemRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/deck': typeof DeckRoute
   '/system': typeof SystemRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/deck' | '/system'
+  fullPaths: '/' | '/deck' | '/system'
   fileRoutesByTo: FileRoutesByTo
-  to: '/deck' | '/system'
-  id: '__root__' | '/deck' | '/system'
+  to: '/' | '/deck' | '/system'
+  id: '__root__' | '/' | '/deck' | '/system'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   DeckRoute: typeof DeckRoute
   SystemRoute: typeof SystemRoute
 }
@@ -65,10 +75,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   DeckRoute: DeckRoute,
   SystemRoute: SystemRoute,
 }
