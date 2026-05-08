@@ -1,881 +1,681 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Beaker, GraduationCap, Stethoscope, Brain, Sparkles, Check, AlertTriangle,
-  Info, X, Search, Settings, Bell, User, Play, Pause, ChevronRight, Layers,
-  BarChart3, Database, Lock, Globe, Zap, BookOpen, Users, FileText, Plus,
-  Eye, Edit3, Trash2, Download, Upload, Filter, Calendar, Clock, Heart,
-  CircleCheck, CircleAlert, Star, Command, ArrowRight,
+  Beaker, GraduationCap, Stethoscope, Brain, Check, AlertTriangle, Info, X,
+  Search, Bell, Play, ChevronRight, BarChart3, Database, Globe, Download,
+  ArrowUpRight, Plus, Filter, Circle, Square, Triangle, Minus, Equal,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Biruni — Design System v1.0" },
-      { name: "description", content: "Comprehensive design system for Biruni: a MENA-centric behavioral science platform. Tokens, typography, color, components." },
+      { title: "BIRUNI / DS-001 — Behavioral Instrument Design System" },
+      { name: "description", content: "BIRUNI DS-001: a Swiss-brutalist design system for a MENA-centric behavioral science instrument." },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Naskh+Arabic:wght@400;600&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" },
     ],
   }),
-  component: DesignSystem,
+  component: DS,
 });
 
-/* ────────────────────────────────────────────────────────────────────── */
+const SIGNAL = "var(--color-signal)";
 
-function Section({ id, eyebrow, title, titleAr, children }: { id: string; eyebrow: string; title: string; titleAr?: string; children: React.ReactNode }) {
-  // eyebrow looks like "01 · Foundations" — split it into folio number + chapter name
-  const [folio, ...rest] = eyebrow.split("·").map((s) => s.trim());
-  const chapter = rest.join(" · ");
+/* ── Primitives ───────────────────────────────────────────────────────── */
+
+function Tag({ children, mode = "ink" }: { children: React.ReactNode; mode?: "ink" | "signal" | "outline" }) {
+  const m = {
+    ink: "bg-foreground text-background",
+    signal: "bg-[var(--color-signal)] text-foreground",
+    outline: "border border-foreground text-foreground",
+  }[mode];
+  return <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] ${m}`}>{children}</span>;
+}
+
+function Spec({ k, v }: { k: string; v: string }) {
   return (
-    <section id={id} className="relative py-24">
-      {/* running head */}
-      <div className="mx-auto max-w-7xl px-8">
-        <div className="flex items-baseline justify-between border-b border-foreground pb-2 font-mono text-[10px] uppercase tracking-[0.3em] text-foreground/70">
-          <span>Biruni · Design System</span>
-          <span className="num-tab">— {folio} —</span>
-          <span>{chapter}</span>
+    <div className="flex items-center justify-between gap-3 border-b border-foreground/20 py-1.5 font-mono text-[11px]">
+      <span className="text-muted-foreground uppercase tracking-wider">{k}</span>
+      <span className="text-foreground num-tab">{v}</span>
+    </div>
+  );
+}
+
+function Block({ id, code, title, titleAr, children, span = "" }: {
+  id?: string; code: string; title: string; titleAr?: string; children: React.ReactNode; span?: string;
+}) {
+  return (
+    <section id={id} className={`relative border-2 border-foreground bg-background ${span}`}>
+      <div className="flex items-center justify-between border-b-2 border-foreground bg-foreground px-3 py-1.5 text-background">
+        <span className="font-mono text-[10px] uppercase tracking-[0.22em]">{code}</span>
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em]">{title}</span>
+          {titleAr && <span dir="rtl" className="font-arabic text-[12px] opacity-80">{titleAr}</span>}
         </div>
       </div>
-      <div className="mx-auto mt-12 max-w-7xl px-8">
-        <header className="mb-12 grid gap-x-10 gap-y-4 md:grid-cols-[80px_1fr]">
-          <div className="hidden md:block">
-            <div className="font-display text-7xl font-light leading-none text-accent num-old">{folio}</div>
-          </div>
-          <div>
-            <div className="smcp text-[11px] text-muted-foreground">Chapter · {chapter}</div>
-            <h2 className="mt-2 font-display text-5xl font-light leading-[1.05] text-foreground md:text-6xl">{title}</h2>
-            {titleAr && (
-              <div dir="rtl" className="mt-2 font-arabic text-3xl text-foreground/70">{titleAr}</div>
-            )}
-            <div className="mt-5 h-px w-24 bg-foreground" />
-          </div>
-        </header>
-        {children}
-      </div>
+      <div className="p-5">{children}</div>
     </section>
   );
 }
 
+/* ── Page ─────────────────────────────────────────────────────────────── */
 
-function Swatch({ name, varName, hex, fg = "text-ink-50" }: { name: string; varName: string; hex?: string; fg?: string }) {
-  return (
-    <div className="group">
-      <div
-        className={`relative flex h-24 items-end justify-between rounded-xl p-3 ring-1 ring-inset ring-black/5 ${fg}`}
-        style={{ background: `var(${varName})` }}
-      >
-        <span className="font-mono text-[10px] opacity-80">{name}</span>
-      </div>
-      <div className="mt-2 flex items-center justify-between">
-        <span className="font-mono text-[11px] text-foreground">{name}</span>
-        <span className="font-mono text-[10px] text-muted-foreground">{hex ?? varName}</span>
-      </div>
-    </div>
-  );
-}
-
-function Token({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-md bg-muted/60 px-3 py-2 font-mono text-xs">
-      <span className="text-muted-foreground">{k}</span>
-      <span className="text-foreground">{v}</span>
-    </div>
-  );
-}
-
-function DesignSystem() {
+function DS() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* ── Masthead ── */}
-      <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background/95 backdrop-blur-sm">
-        <div className="mx-auto max-w-7xl px-8">
-          <div className="flex items-end justify-between gap-6 py-3">
-            <div className="flex items-end gap-4">
-              <Logo />
-              <div className="leading-none">
-                <div className="font-display text-2xl font-light tracking-tight text-foreground">Bīrūnī</div>
-                <div className="smcp mt-1 text-[10px] text-muted-foreground">Vol. I · Issue 01 · MMXXVI</div>
-              </div>
+
+      {/* ─── Ticker bar ────────────────────────────────────────────────── */}
+      <div className="ticker overflow-hidden whitespace-nowrap border-b-2 border-foreground py-1.5">
+        <div className="flex animate-[marquee_40s_linear_infinite] gap-8 px-4 font-mono text-[11px] uppercase tracking-[0.25em]">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="flex shrink-0 items-center gap-8">
+              <span>● LIVE BUILD 2026.05.08</span>
+              <span>DS-001 / v1.0.0</span>
+              <span>Tokens 142</span>
+              <span>Components 38</span>
+              <span>Personas 03</span>
+              <span>Locale EN · ع</span>
+              <span>Direction LTR ⇄ RTL</span>
+              <span>WCAG AA ✓</span>
             </div>
-            <div className="hidden text-right leading-tight md:block">
-              <div className="font-display text-sm italic text-foreground">A field manual for the behavioral sciences</div>
-              <div dir="rtl" className="font-arabic text-base text-muted-foreground">دليلٌ ميدانيٌّ لعلوم السلوك</div>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── Masthead ──────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background">
+        <div className="grid grid-cols-12 items-stretch">
+          <div className="col-span-3 flex items-center gap-3 border-r-2 border-foreground px-4 py-3">
+            <Mark />
+            <div className="leading-none">
+              <div className="font-display text-lg font-bold tracking-tight">BIRUNI</div>
+              <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-muted-foreground">Behavioral Instrument</div>
             </div>
           </div>
-          <nav className="flex items-center justify-between border-t border-foreground/30 py-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-            <div className="flex items-center gap-5">
-              <a href="#foundations" className="hover:text-foreground">i. Foundations</a>
-              <a href="#color" className="hover:text-foreground">ii. Color</a>
-              <a href="#type" className="hover:text-foreground">iii. Type</a>
-              <a href="#components" className="hover:text-foreground">iv. Components</a>
-              <a href="#bilingual" className="hover:text-foreground">v. EN · ع</a>
-              <a href="#patterns" className="hover:text-foreground">vi. Patterns</a>
-            </div>
-            <a href="#tokens" className="inline-flex items-center gap-1.5 text-foreground hover:text-accent">
-              <Download size={11} /> tokens.json →
-            </a>
+          <nav className="col-span-7 hidden items-center gap-0 border-r-2 border-foreground md:flex">
+            {["00 Index","01 Tokens","02 Type","03 Color","04 Grid","05 Components","06 Patterns","07 RTL"].map((l, i) => (
+              <a key={l} href={`#s${i}`} className={`flex h-full items-center px-3 font-mono text-[10px] uppercase tracking-[0.2em] hover:bg-foreground hover:text-background ${i === 0 ? "bg-[var(--color-signal)]" : ""}`}>
+                {l}
+              </a>
+            ))}
           </nav>
+          <div className="col-span-12 flex items-center justify-between gap-2 px-4 py-3 md:col-span-2">
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em]">EN/ع</span>
+            <button className="inline-flex items-center gap-1 bg-foreground px-2 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-background">
+              <Download size={11} /> .json
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* ── Cover (Hero) ── */}
-      <section className="relative overflow-hidden border-b-2 border-foreground">
-        <div className="mx-auto grid max-w-7xl grid-cols-12 gap-x-6 px-8 py-20 md:py-28">
-          {/* left rail */}
-          <aside className="col-span-12 md:col-span-2 md:border-r md:border-foreground/30 md:pr-4">
-            <div className="space-y-6 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              <div>
-                <div className="text-foreground">№ 001</div>
-                <div className="mt-1">First edition</div>
+      {/* ─── Hero / Cover plate ────────────────────────────────────────── */}
+      <section id="s0" className="relative border-b-2 border-foreground">
+        <div className="grid grid-cols-12">
+          {/* Big numeral plate */}
+          <div className="relative col-span-12 border-r-2 border-foreground md:col-span-5">
+            <div className="absolute inset-0 blueprint opacity-60" />
+            <div className="relative flex h-full flex-col justify-between p-6">
+              <div className="flex items-start justify-between">
+                <Tag mode="signal">Plate 001</Tag>
+                <div className="text-right font-mono text-[10px] uppercase tracking-[0.22em]">
+                  <div>Spec sheet</div>
+                  <div className="text-muted-foreground">DS-001 / 2026·Q2</div>
+                </div>
               </div>
               <div>
-                <div className="text-foreground">Pp. 142</div>
-                <div className="mt-1">Tokens</div>
+                <div className="font-display text-[180px] font-bold leading-[0.82] tracking-[-0.06em] num-tab md:text-[260px]">
+                  DS<span className="text-[var(--color-signal)]">·</span>01
+                </div>
+                <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                  Issue one — first observation
+                </div>
               </div>
-              <div>
-                <div className="text-foreground">III</div>
-                <div className="mt-1">Personae</div>
-              </div>
-              <div>
-                <div className="text-foreground">EN · عر</div>
-                <div className="mt-1">LTR · RTL</div>
+              <div className="grid grid-cols-3 gap-3 border-t-2 border-foreground pt-3 font-mono text-[10px] uppercase tracking-[0.2em]">
+                <div><div className="text-muted-foreground">Tokens</div><div className="num-tab text-lg">142</div></div>
+                <div><div className="text-muted-foreground">Comp.</div><div className="num-tab text-lg">038</div></div>
+                <div><div className="text-muted-foreground">Personae</div><div className="num-tab text-lg">003</div></div>
               </div>
             </div>
-          </aside>
-
-          {/* center cover */}
-          <div className="col-span-12 md:col-span-7 md:px-2">
-            <div className="rule-thick mb-6" />
-            <div className="smcp text-[11px] text-foreground">A MENA-centric platform for the behavioral sciences</div>
-            <h1 className="mt-3 font-display text-[64px] font-light leading-[0.92] tracking-[-0.025em] text-foreground md:text-[112px]">
-              The <em className="not-italic text-accent" style={{ fontStyle: "italic" }}>grammar</em>
-              <br />
-              of behavioral
-              <br />
-              science.
-            </h1>
-            <div dir="rtl" className="mt-4 font-arabic text-3xl leading-[1.4] text-foreground md:text-5xl">
-              قواعدُ <em className="not-italic text-accent">علمِ السلوك</em>.
-            </div>
-            <div className="rule-thick mt-8" />
-            <p className="dropcap mt-6 max-w-xl text-[15px] leading-[1.7] text-foreground">
-              Biruni is a working instrument for researchers, educators, and clinicians — three
-              disciplines bound by a single grammar of measurement, designed in the rhythms and
-              writing systems of the region. This volume documents its tokens, type, and patterns.
-            </p>
-            <p dir="rtl" className="mt-4 max-w-xl font-arabic text-lg leading-[2] text-muted-foreground">
-              بيرونيُّ أداةٌ للباحثين والمعلّمين والأطبّاء — ثلاثُ مِهنٍ تجمعُها قواعدُ قياسٍ واحدة، صُمِّمت بإيقاعِ المنطقة وحرفِها.
-            </p>
           </div>
 
-          {/* right ornament — Islamic geometric star */}
-          <aside className="col-span-12 md:col-span-3 md:border-l md:border-foreground/30 md:pl-6">
-            <Ornament />
-            <div className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              Plate i. <span className="text-foreground">Octagram</span>
+          {/* Statement */}
+          <div className="col-span-12 flex flex-col justify-between p-6 md:col-span-7">
+            <div className="flex items-center gap-2">
+              <Tag mode="outline">A MENA-centric behavioral science instrument</Tag>
+              <Tag>EN · ع</Tag>
             </div>
-            <div className="mt-1 text-center font-arabic text-sm text-muted-foreground" dir="rtl">
-              نجمةٌ ثمانيّة
+
+            <h1 className="my-8 font-display text-5xl font-medium leading-[0.95] tracking-[-0.035em] md:text-7xl">
+              Measure behavior <br />
+              <span className="bg-[var(--color-signal)] px-1.5">like an instrument</span>,<br />
+              <span className="italic font-light">read it like a manuscript.</span>
+            </h1>
+
+            <div dir="rtl" className="mb-6 font-arabic text-3xl font-medium leading-[1.4] md:text-5xl">
+              قِسِ السلوك <span className="bg-[var(--color-signal)] px-1.5">كالأداة</span>،
+              <br /> واقرأه <span className="italic">كالمخطوطة</span>.
             </div>
-            <div className="mt-6 border-t border-foreground/30 pt-4 text-[12px] italic leading-relaxed text-muted-foreground">
-              "Knowledge is acquired by repetition; certainty by demonstration."
-              <div className="mt-1 not-italic font-mono text-[10px] uppercase tracking-widest">— Al-Bīrūnī, c. 1030</div>
+
+            <div className="grid gap-4 border-t-2 border-foreground pt-4 md:grid-cols-2">
+              <p className="text-[14px] leading-[1.6]">
+                BIRUNI is a workbench for behavioral research, classroom assessment, and clinical practice.
+                This document is its operating manual — every token, every grid, every gesture catalogued.
+              </p>
+              <p dir="rtl" className="font-arabic text-[15px] leading-[1.9]">
+                بيروني منصةٌ للأبحاث السلوكية، والتقييم الصفّي، والممارسة السريرية. هذا المستندُ دليلُ تشغيلها — كلُّ رمزٍ وكلُّ شبكةٍ موثَّق.
+              </p>
             </div>
-          </aside>
+
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              <button className="inline-flex items-center gap-2 border-2 border-foreground bg-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-background hover:bg-[var(--color-signal)] hover:text-foreground">
+                Open workbench <ArrowUpRight size={14} />
+              </button>
+              <button className="inline-flex items-center gap-2 border-2 border-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] hover:bg-foreground hover:text-background">
+                <Download size={14} /> Specimen.pdf
+              </button>
+              <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">↳ scroll for spec</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Foundations ── */}
-      <Section id="foundations" eyebrow="01 · Foundations" title="Principles" titleAr="المبادئ">
-        <div className="grid gap-0 border-y border-foreground md:grid-cols-3 md:divide-x md:divide-foreground/30">
-          {[
-            { n: "i.", icon: Brain, title: "Cognitive clarity", titleAr: "وضوحٌ معرفي", body: "Every surface earns its weight. Density serves the work, not the brand.", bodyAr: "كلُّ عنصرٍ يستحقُّ مكانه. الكثافةُ تخدمُ العمل، لا العلامة." },
-            { n: "ii.", icon: Globe, title: "Bilingual by default", titleAr: "ثنائيُّ اللغة افتراضيًا", body: "Latin and Arabic share the same vertical rhythm. Mirror gracefully.", bodyAr: "اللاتينيّةُ والعربيّةُ على إيقاعٍ واحد. ينعكسُ التخطيطُ بأناقة." },
-            { n: "iii.", icon: Layers, title: "Persona-aware", titleAr: "مدركٌ للأدوار", body: "Research, Education, Clinical — three accents, one system.", bodyAr: "بحثٌ، تعليمٌ، عيادةٌ — ثلاثةُ ألوانٍ في نظامٍ واحد." },
-          ].map((p) => (
-            <article key={p.title} className="relative p-8 first:pl-0 md:px-8">
-              <div className="flex items-baseline justify-between border-b border-foreground/30 pb-3">
-                <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground num-old">{p.n}</span>
-                <p.icon className="text-accent" size={18} strokeWidth={1.25} />
+      {/* ─── 01 TOKENS / Color ─────────────────────────────────────────── */}
+      <section id="s1" className="border-b-2 border-foreground">
+        <SectionHead n="01" name="Color & tokens" nameAr="الألوان والرموز" abstract="Two-tone foundation — paper & ink — with a single SIGNAL accent. Three persona hues are used only for classification, never decoration." />
+        <div className="grid grid-cols-12 gap-0">
+          {/* Two-tone strip */}
+          <div className="col-span-12 grid grid-cols-2 border-b-2 border-foreground md:col-span-7 md:border-b-0 md:border-r-2">
+            <div className="flex h-64 flex-col justify-between border-r-2 border-foreground bg-[var(--color-paper)] p-4 text-foreground">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em]">PAPER · base</span>
+              <div>
+                <div className="font-display text-3xl font-medium">paper</div>
+                <div className="font-mono text-[11px] text-muted-foreground">--paper · oklch(.965 .008 95)</div>
               </div>
-              <h3 className="mt-5 font-display text-3xl font-light leading-tight">{p.title}</h3>
-              <div dir="rtl" className="mt-1 font-arabic text-2xl text-foreground/75">{p.titleAr}</div>
-              <p className="mt-4 text-[14px] leading-[1.7] text-foreground/80">{p.body}</p>
-              <p dir="rtl" className="mt-2 font-arabic text-[15px] leading-[2] text-muted-foreground">{p.bodyAr}</p>
-            </article>
+            </div>
+            <div className="flex h-64 flex-col justify-between bg-foreground p-4 text-background">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em]">INK · contrast</span>
+              <div>
+                <div className="font-display text-3xl font-medium">ink</div>
+                <div className="font-mono text-[11px] opacity-70">--ink · oklch(.165 .012 260)</div>
+              </div>
+            </div>
+          </div>
+          {/* Signal */}
+          <div className="col-span-12 flex h-64 flex-col justify-between bg-[var(--color-signal)] p-4 text-foreground md:col-span-5">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em]">SIGNAL · single accent</span>
+              <Tag mode="ink">USE SPARINGLY</Tag>
+            </div>
+            <div>
+              <div className="font-display text-5xl font-bold tracking-tight">signal</div>
+              <div className="font-mono text-[11px]">--signal · oklch(.78 .19 130)</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Persona swatches */}
+        <div className="grid grid-cols-12 border-t-2 border-foreground">
+          {[
+            { key: "research", label: "Research", ar: "بحث", code: "P-01", icon: Beaker },
+            { key: "education", label: "Education", ar: "تعليم", code: "P-02", icon: GraduationCap },
+            { key: "clinical", label: "Clinical", ar: "عيادة", code: "P-03", icon: Stethoscope },
+          ].map((p, i) => (
+            <div key={p.key} className={`col-span-12 md:col-span-4 ${i < 2 ? "md:border-r-2 md:border-foreground" : ""} border-b-2 border-foreground md:border-b-0`}>
+              <div className="h-40" style={{ background: `var(--color-${p.key})` }} />
+              <div className="grid grid-cols-[40px_1fr] items-stretch border-t-2 border-foreground">
+                <div className="grid place-items-center border-r border-foreground bg-foreground text-background">
+                  <p.icon size={16} />
+                </div>
+                <div className="flex items-center justify-between p-3">
+                  <div>
+                    <div className="font-display text-lg font-medium leading-tight">{p.label}</div>
+                    <div dir="rtl" className="font-arabic text-sm leading-tight text-muted-foreground">{p.ar}</div>
+                  </div>
+                  <Tag mode="outline">{p.code}</Tag>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
 
-      </Section>
-
-      {/* ── Color ── */}
-      <Section id="color" eyebrow="02 · Color" title="Tokens & palette" titleAr="الألوان">
-        <div className="space-y-12">
-          <div>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Ink — primary neutral (scholarly indigo)</h3>
-            <div className="grid grid-cols-5 gap-3 md:grid-cols-10">
-              {[50,100,200,300,400,500,600,700,800,900].map((s) => (
-                <Swatch key={s} name={`ink-${s}`} varName={`--ink-${s}`} fg={s>=400?"text-ink-50":"text-ink-900"} />
-              ))}
-            </div>
+        {/* Token table */}
+        <div className="grid grid-cols-12 border-t-2 border-foreground">
+          <div className="col-span-12 border-r-2 border-foreground p-5 md:col-span-4">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">— Manifest —</div>
+            <h3 className="mt-1 font-display text-3xl font-medium leading-tight">Semantic tokens</h3>
+            <p className="mt-3 text-[13px] leading-[1.6] text-muted-foreground">Every surface and every state resolves to a named token. No raw hex in components — ever.</p>
           </div>
-          <div>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Sand — warm MENA neutral</h3>
-            <div className="grid grid-cols-5 gap-3 md:grid-cols-10">
-              {[50,100,200,300,400,500,600,700,800,900].map((s) => (
-                <Swatch key={s} name={`sand-${s}`} varName={`--sand-${s}`} fg={s>=500?"text-sand-50":"text-sand-900"} />
-              ))}
-            </div>
-          </div>
-          <div>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Saffron — accent</h3>
-            <div className="grid grid-cols-3 gap-3 md:max-w-md">
-              <Swatch name="saffron-300" varName="--saffron-300" fg="text-ink-900" />
-              <Swatch name="saffron-500" varName="--saffron-500" fg="text-ink-900" />
-              <Swatch name="saffron-700" varName="--saffron-700" fg="text-ink-50" />
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Semantic</h3>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              <Swatch name="primary" varName="--primary" />
-              <Swatch name="accent" varName="--accent" fg="text-ink-900" />
-              <Swatch name="success" varName="--success" />
-              <Swatch name="warning" varName="--warning" fg="text-ink-900" />
-              <Swatch name="info" varName="--info" />
-              <Swatch name="destructive" varName="--destructive" />
-              <Swatch name="muted" varName="--muted" fg="text-ink-900" />
-              <Swatch name="border" varName="--border" fg="text-ink-900" />
-            </div>
-          </div>
-
-          <div>
-            <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">Persona accents</h3>
-            <div className="grid gap-4 md:grid-cols-3">
-              {[
-                { key: "research", label: "Research", labelAr: "بحث", icon: Beaker, copy: "Cool indigo. Empirical. Data-forward.", copyAr: "نيليٌّ هادئ. تجريبيٌّ. مُوجَّهٌ بالبيانات." },
-                { key: "education", label: "Education", labelAr: "تعليم", icon: GraduationCap, copy: "Warm saffron. Inviting. Classroom-ready.", copyAr: "زعفرانيٌّ دافئ. مُرحِّب. جاهزٌ للفصل." },
-                { key: "clinical", label: "Clinical", labelAr: "عيادة", icon: Stethoscope, copy: "Calm teal. Trustworthy. Care-first.", copyAr: "فيروزيٌّ ساكن. موثوق. الرعايةُ أوّلًا." },
-              ].map((p) => (
-                <div key={p.key} className="overflow-hidden rounded-2xl border border-border bg-card">
-                  <div className="flex h-32 items-end justify-between p-5" style={{ background: `var(--${p.key})`, color: `var(--${p.key}-foreground)` }}>
-                    <div>
-                      <p.icon size={22} />
-                      <div className="mt-3 font-display text-2xl">{p.label}</div>
-                    </div>
-                    <div dir="rtl" className="font-arabic text-2xl opacity-90">{p.labelAr}</div>
-                  </div>
-                  <div className="p-5">
-                    <p className="text-sm text-muted-foreground">{p.copy}</p>
-                    <p dir="rtl" className="mt-1 font-arabic text-base leading-loose text-muted-foreground">{p.copyAr}</p>
-                    <div className="mt-3 font-mono text-[11px] text-muted-foreground">--{p.key} / --{p.key}-foreground</div>
-                  </div>
-                </div>
-              ))}
+          <div className="col-span-12 p-5 md:col-span-8">
+            <div className="grid gap-x-8 md:grid-cols-2">
+              <Spec k="--background" v="paper" />
+              <Spec k="--foreground" v="ink" />
+              <Spec k="--primary" v="ink" />
+              <Spec k="--accent" v="signal" />
+              <Spec k="--muted" v="oklch(.92 .010 95)" />
+              <Spec k="--border" v="ink · 2px" />
+              <Spec k="--ring" v="signal · 2px" />
+              <Spec k="--destructive" v="oklch(.55 .22 28)" />
+              <Spec k="--success" v="oklch(.65 .16 145)" />
+              <Spec k="--warning" v="oklch(.78 .16 75)" />
+              <Spec k="--research" v="ultramarine" />
+              <Spec k="--clinical" v="cyan" />
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* ── Typography ── */}
-      <Section id="type" eyebrow="03 · Typography" title="Type system" titleAr="نظام الطباعة">
-        <div className="grid gap-12 md:grid-cols-[1fr_320px]">
-          <div className="space-y-8">
-            <div className="border-b border-border pb-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Display · Fraunces · 96/0.95/-0.02em</div>
-              <div className="mt-2 font-display text-7xl font-light leading-[0.95] tracking-tight">Discover the mind.</div>
+      {/* ─── 02 TYPE ────────────────────────────────────────────────────── */}
+      <section id="s2" className="border-b-2 border-foreground">
+        <SectionHead n="02" name="Typography" nameAr="الطباعة" abstract="Space Grotesk for UI & display. JetBrains Mono for measurement & metadata. IBM Plex Sans Arabic for ع. Set on a 4px baseline." />
+        <div className="grid grid-cols-12">
+          <div className="col-span-12 border-r-2 border-foreground p-6 md:col-span-8">
+            <TypeRow tag="DISPLAY/120" spec="Space Grotesk · 120/96/-0.04em">Behavioral grammar.</TypeRow>
+            <TypeRow tag="H1/56" spec="Space Grotesk · 56/56/-0.025em" weight="font-medium">Stroop interference task</TypeRow>
+            <TypeRow tag="H2/36" spec="Space Grotesk · 36/40/-0.02em" weight="font-medium">Methodology</TypeRow>
+            <TypeRow tag="LEAD/20" spec="Space Grotesk · 20/30" weight="font-light italic">A workbench for measurement.</TypeRow>
+            <TypeRow tag="BODY/15" spec="Space Grotesk · 15/24">
+              We instrument behavior across three settings — research, education, clinical — using one grammar of trials, stimuli, and responses.
+            </TypeRow>
+            <TypeRow tag="MONO/12" spec="JetBrains Mono · 12/18 · tabular">
+              <span className="font-mono">trial.id = 0042 · rt = 487ms · acc = 0.92</span>
+            </TypeRow>
+            <TypeRow tag="ARABIC/24" spec="IBM Plex Sans Arabic · 24/40">
+              <span dir="rtl" className="font-arabic">منصّة بيروني — أداةٌ لقياس السلوك في البحث والتعليم والممارسة السريريّة.</span>
+            </TypeRow>
+          </div>
+          {/* Type ratio diagram */}
+          <div className="relative col-span-12 md:col-span-4">
+            <div className="absolute inset-0 blueprint opacity-60" />
+            <div className="relative flex h-full flex-col justify-end gap-1 p-5">
+              {[
+                { s: 120, l: "DSP" }, { s: 56, l: "H1" }, { s: 36, l: "H2" }, { s: 24, l: "H3" },
+                { s: 20, l: "LD" }, { s: 15, l: "BD" }, { s: 12, l: "MN" },
+              ].map((r) => (
+                <div key={r.l} className="flex items-end gap-2">
+                  <span className="w-8 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{r.l}</span>
+                  <div className="h-3 bg-foreground" style={{ width: `${r.s * 1.4}px` }} />
+                  <span className="font-mono text-[10px] num-tab">{r.s}</span>
+                </div>
+              ))}
+              <div className="mt-3 border-t-2 border-foreground pt-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                Type ramp · base 16 · ratio 1.333
+              </div>
             </div>
-            <div className="border-b border-border pb-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">H1 · 56/1/-0.02em</div>
-              <div className="mt-2 font-display text-5xl font-medium">Stroop interference task</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 03 GRID & SPACE ───────────────────────────────────────────── */}
+      <section id="s3" className="border-b-2 border-foreground">
+        <SectionHead n="03" name="Grid · spacing · radius" nameAr="الشبكة والمسافات" abstract="A 12-column grid on a 4-px base. Radius is zero. Borders are 2-px. There is no shadow." />
+        <div className="grid grid-cols-12">
+          {/* 12-col diagram */}
+          <div className="col-span-12 border-r-2 border-foreground p-5 md:col-span-7">
+            <div className="grid h-48 grid-cols-12 gap-2">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <div key={i} className="relative bg-[var(--color-signal)]/40">
+                  <span className="absolute left-1 top-1 font-mono text-[9px] num-tab">{String(i+1).padStart(2,"0")}</span>
+                </div>
+              ))}
             </div>
-            <div className="border-b border-border pb-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">H2 · 36/1.1</div>
-              <div className="mt-2 font-display text-4xl">Methodology</div>
+            <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <span>← gutter 16 →</span>
+              <span>12 col · max-w 1280</span>
+              <span>baseline 4</span>
             </div>
-            <div className="border-b border-border pb-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Body · Inter · 16/1.6</div>
-              <p className="mt-2 max-w-2xl text-base leading-relaxed text-foreground">
-                Biruni provides a unified, collaborative environment for designing behavioral
-                experiments and clinical assessments — built for the rhythms and writing systems of the MENA region.
-              </p>
+          </div>
+          {/* Spacing scale */}
+          <div className="col-span-12 p-5 md:col-span-5">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Spacing scale (px)</div>
+            <div className="mt-3 space-y-1.5">
+              {[2, 4, 8, 12, 16, 24, 32, 48, 64, 96].map((n) => (
+                <div key={n} className="flex items-center gap-3">
+                  <span className="w-10 font-mono text-[11px] num-tab">{n}</span>
+                  <div className="h-3 bg-foreground" style={{ width: n * 2 }} />
+                </div>
+              ))}
             </div>
-            <div className="border-b border-border pb-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Arabic · Noto Naskh · 24/1.7</div>
-              <p dir="rtl" className="mt-2 font-arabic text-2xl leading-relaxed">
-                منصة بيروني لعلوم السلوك — أبحاث، تعليم، وتقييم سريري في مكان واحد.
-              </p>
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              <div className="border-2 border-foreground p-3 text-center">
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Radius</div>
+                <div className="font-display text-3xl font-bold num-tab">0</div>
+              </div>
+              <div className="border-2 border-foreground p-3 text-center">
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Border</div>
+                <div className="font-display text-3xl font-bold num-tab">2</div>
+              </div>
+              <div className="border-2 border-foreground p-3 text-center">
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Shadow</div>
+                <div className="font-display text-3xl font-bold">∅</div>
+              </div>
             </div>
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Mono · JetBrains Mono · 13/1.5</div>
-              <pre className="mt-2 overflow-x-auto rounded-lg bg-ink-900 p-4 font-mono text-[13px] leading-relaxed text-sand-100">
-{`trial.show({
-  stimulus: "RED",
-  ink: "blue",
-  duration_ms: 1500,
-})`}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 04 ICONOGRAPHY ────────────────────────────────────────────── */}
+      <section id="s4" className="border-b-2 border-foreground">
+        <SectionHead n="04" name="Iconography" nameAr="الرموز التصويريّة" abstract="Lucide line set, 1.5-px stroke, drawn on the 24-grid. Geometric primitives carry meaning before metaphor." />
+        <div className="grid grid-cols-3 gap-0 md:grid-cols-6 lg:grid-cols-12">
+          {[Beaker, GraduationCap, Stethoscope, Brain, BarChart3, Database, Globe, Bell, Search, Play, Filter, Plus, Check, X, Info, AlertTriangle, Circle, Square, Triangle, Minus, Equal, ChevronRight, ArrowUpRight, Download].map((I, i) => (
+            <div key={i} className="flex aspect-square flex-col items-center justify-center gap-1 border border-foreground/40 hover:bg-foreground hover:text-background">
+              <I size={20} strokeWidth={1.5} />
+              <span className="font-mono text-[9px] uppercase tracking-widest opacity-60">{String(i+1).padStart(2,"0")}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── 05 COMPONENTS ─────────────────────────────────────────────── */}
+      <section id="s5" className="border-b-2 border-foreground">
+        <SectionHead n="05" name="Components" nameAr="المكوّنات" abstract="Specimens shown with a measurement crosshair. Every variant declares its tokens." />
+        <div className="grid grid-cols-12 gap-0">
+          <Block code="C-01" title="Buttons" titleAr="أزرار" span="col-span-12 md:col-span-6 border-r-2 md:border-b-2 border-foreground">
+            <div className="flex flex-wrap items-center gap-3">
+              <button className="bg-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-background">Primary</button>
+              <button className="bg-[var(--color-signal)] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em]">Signal</button>
+              <button className="border-2 border-foreground px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em]">Outline</button>
+              <button className="px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] underline underline-offset-4">ghost ↗</button>
+              <button disabled className="bg-muted px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">disabled</button>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-x-6">
+              <Spec k="height" v="36px" />
+              <Spec k="padding" v="16/8" />
+              <Spec k="border" v="2px ink" />
+              <Spec k="font" v="mono · 11/0.22em" />
+            </div>
+          </Block>
+
+          <Block code="C-02" title="Inputs" titleAr="حقول" span="col-span-12 md:col-span-6 md:border-b-2 border-foreground">
+            <label className="block">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Participant ID</span>
+              <input defaultValue="P-0042" className="mt-1 block w-full border-2 border-foreground bg-background px-3 py-2 font-mono text-sm focus:outline-none focus:bg-[var(--color-signal)]" />
+            </label>
+            <div className="mt-3 flex items-center gap-3">
+              <label className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                <span className="grid h-4 w-4 place-items-center border-2 border-foreground bg-[var(--color-signal)]"><Check size={12} strokeWidth={3} /></span>
+                Consent
+              </label>
+              <label className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
+                <span className="h-4 w-4 border-2 border-foreground" />
+                Anonymous
+              </label>
+              <span className="ml-auto inline-flex h-5 w-9 items-center border-2 border-foreground bg-[var(--color-signal)]">
+                <span className="ml-auto h-full w-4 bg-foreground" />
+              </span>
+            </div>
+          </Block>
+
+          <Block code="C-03" title="Status" titleAr="الحالة" span="col-span-12 md:col-span-6 border-r-2 md:border-b-2 border-foreground">
+            <div className="flex flex-wrap gap-2">
+              {[
+                { l: "PASS", t: "ink", icon: Check },
+                { l: "WARN", t: "signal", icon: AlertTriangle },
+                { l: "INFO", t: "outline", icon: Info },
+                { l: "FAIL · 422", t: "outline", icon: X },
+              ].map((b) => (
+                <span key={b.l} className={`inline-flex items-center gap-1.5 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.2em] ${b.t === "ink" ? "bg-foreground text-background" : b.t === "signal" ? "bg-[var(--color-signal)] text-foreground" : "border-2 border-foreground"}`}>
+                  <b.icon size={11} strokeWidth={2.5} /> {b.l}
+                </span>
+              ))}
+            </div>
+            <div className="mt-4 border-2 border-foreground">
+              <div className="flex items-center justify-between bg-foreground px-3 py-1.5 text-background">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em]">log · n-back</span>
+                <span className="font-mono text-[10px] num-tab">14:32:08</span>
+              </div>
+              <pre className="overflow-x-auto p-3 font-mono text-[11px] leading-[1.6]">
+{`> trial 042 ........ rt 487ms acc ✓
+> trial 043 ........ rt 612ms acc ✗
+> trial 044 ........ rt 401ms acc ✓
+> block.end       n=20 acc=0.85`}
               </pre>
             </div>
-          </div>
-          <aside className="space-y-2 self-start rounded-2xl border border-border bg-card p-5">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Scale tokens</div>
-            <Token k="text-xs" v="12 / 16" />
-            <Token k="text-sm" v="14 / 20" />
-            <Token k="text-base" v="16 / 26" />
-            <Token k="text-lg" v="18 / 28" />
-            <Token k="text-xl" v="20 / 30" />
-            <Token k="text-2xl" v="24 / 32" />
-            <Token k="text-3xl" v="30 / 38" />
-            <Token k="text-4xl" v="36 / 44" />
-            <Token k="text-5xl" v="48 / 56" />
-            <Token k="text-6xl" v="60 / 60" />
-            <Token k="text-7xl" v="72 / 72" />
-            <Token k="text-8xl" v="96 / 95" />
-          </aside>
-        </div>
-      </Section>
+          </Block>
 
-      {/* ── Spacing / Radius / Shadow ── */}
-      <Section id="primitives" eyebrow="04 · Primitives" title="Spacing, radius, elevation" titleAr="المسافات والحواف">
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-display text-2xl">Spacing</h3>
-            <div className="mt-5 space-y-3">
-              {[1,2,3,4,6,8,12,16,24].map((n) => (
-                <div key={n} className="flex items-center gap-3">
-                  <span className="w-10 font-mono text-[11px] text-muted-foreground">{n*4}px</span>
-                  <div className="h-3 rounded bg-accent" style={{ width: `${n*8}px` }} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-display text-2xl">Radius</h3>
-            <div className="mt-5 grid grid-cols-3 gap-3">
-              {[
-                ["sm","6px"], ["md","8px"], ["lg","10px"],
-                ["xl","14px"], ["2xl","18px"], ["3xl","22px"],
-              ].map(([k,v]) => (
-                <div key={k} className="text-center">
-                  <div className={`mx-auto h-16 w-16 bg-primary/15 ring-1 ring-primary/25 rounded-${k}`} />
-                  <div className="mt-2 font-mono text-[11px] text-muted-foreground">{k} · {v}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <h3 className="font-display text-2xl">Elevation</h3>
-            <div className="mt-5 grid grid-cols-2 gap-4">
-              {[
-                ["xs","shadow-xs"], ["sm","shadow-sm"], ["md","shadow-md"], ["lg","shadow-lg"],
-              ].map(([k,c]) => (
-                <div key={k} className="text-center">
-                  <div className={`mx-auto h-16 w-full rounded-xl bg-card ${c} border border-border`} />
-                  <div className="mt-2 font-mono text-[11px] text-muted-foreground">{k}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── Iconography ── */}
-      <Section id="icons" eyebrow="05 · Iconography" title="Lucide · 1.75 stroke" titleAr="الأيقونات">
-        <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="grid grid-cols-6 gap-4 md:grid-cols-12">
+          <Block code="C-04" title="Cards · personae" titleAr="بطاقات الأدوار" span="col-span-12 md:col-span-6 md:border-b-2 border-foreground">
             {[
-              Brain, Beaker, GraduationCap, Stethoscope, Sparkles, BarChart3,
-              Database, Lock, Globe, Zap, BookOpen, Users, FileText, Plus,
-              Eye, Edit3, Trash2, Download, Upload, Filter, Calendar, Clock,
-              Heart, Search, Settings, Bell, User, Play, Pause, ChevronRight,
-              Layers, Star, Command, Check, Info, AlertTriangle,
-            ].map((Icon, i) => (
-              <div key={i} className="group flex aspect-square flex-col items-center justify-center rounded-xl border border-border bg-background text-muted-foreground transition hover:border-accent hover:text-accent">
-                <Icon size={20} strokeWidth={1.75} />
+              { p: "research", l: "Stroop · v3.2", ar: "ستروب", n: "27 trials", I: Beaker },
+              { p: "education", l: "Vocab recall", ar: "استرجاع المفردات", n: "5th grade", I: GraduationCap },
+              { p: "clinical", l: "ADHD screen", ar: "فحص فرط الحركة", n: "DSM-5", I: Stethoscope },
+            ].map((c) => (
+              <div key={c.l} className="flex items-stretch gap-0 border-2 border-foreground" style={{ marginBottom: 8 }}>
+                <div className="grid w-10 place-items-center" style={{ background: `var(--color-${c.p})` }}>
+                  <c.I size={16} />
+                </div>
+                <div className="flex flex-1 items-center justify-between px-3 py-2">
+                  <div>
+                    <div className="font-display text-sm font-semibold leading-tight">{c.l}</div>
+                    <div dir="rtl" className="font-arabic text-xs leading-tight text-muted-foreground">{c.ar}</div>
+                  </div>
+                  <div className="text-right font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{c.n}</div>
+                </div>
               </div>
             ))}
-          </div>
-        </div>
-      </Section>
+          </Block>
 
-      {/* ── Components ── */}
-      <Section id="components" eyebrow="06 · Components" title="Buttons, inputs, badges, alerts" titleAr="المكوّنات">
-        {/* Buttons */}
-        <div className="rounded-2xl border border-border bg-card p-6">
-          <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Buttons</div>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground shadow-sm hover:opacity-90">
-              <Sparkles size={15} /> Primary
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-sm hover:opacity-90">
-              Accent
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted">
-              Secondary
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted">
-              Ghost <ArrowRight size={14} />
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg bg-destructive px-4 py-2.5 text-sm font-medium text-destructive-foreground shadow-sm hover:opacity-90">
-              <Trash2 size={14} /> Destructive
-            </button>
-            <button disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-lg bg-muted px-4 py-2.5 text-sm font-medium text-muted-foreground opacity-60">
-              Disabled
-            </button>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-3">
-            <button className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">sm</button>
-            <button className="rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground">md</button>
-            <button className="rounded-lg bg-primary px-5 py-3 text-base font-medium text-primary-foreground">lg</button>
-            <button className="rounded-full bg-primary px-6 py-3 text-base font-medium text-primary-foreground">pill</button>
-            <button className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-primary-foreground"><Plus size={16} /></button>
-          </div>
+          <Block code="C-05" title="Data table" titleAr="جدول البيانات" span="col-span-12 border-foreground">
+            <table className="w-full border-collapse font-mono text-[12px]">
+              <thead>
+                <tr className="bg-foreground text-background">
+                  {["ID", "Subject", "Task", "RT (ms)", "Accuracy", "Status"].map((h) => (
+                    <th key={h} className="border-r border-background/30 px-3 py-1.5 text-left text-[10px] uppercase tracking-[0.22em] last:border-r-0">{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["042", "Layla A.", "Stroop", "487", "0.92", "PASS"],
+                  ["043", "Omar K.",  "N-back", "612", "0.71", "WARN"],
+                  ["044", "Sara T.",  "Stroop", "401", "0.95", "PASS"],
+                  ["045", "Yusuf M.", "Flanker","—",   "—",    "FAIL"],
+                ].map((r) => (
+                  <tr key={r[0]} className="border-b border-foreground/30 last:border-b-0 hover:bg-[var(--color-signal)]/30">
+                    {r.map((c, i) => (
+                      <td key={i} className="border-r border-foreground/20 px-3 py-1.5 num-tab last:border-r-0">{c}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Block>
         </div>
+      </section>
 
-        {/* Inputs */}
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Inputs</div>
-            <div className="mt-4 space-y-4">
-              <label className="block">
-                <span className="text-xs font-medium text-foreground">Experiment name</span>
-                <input className="mt-1.5 w-full rounded-lg border border-input bg-surface-elevated px-3 py-2.5 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/30" defaultValue="Stroop Task — Pilot 03" />
-              </label>
-              <label className="block">
-                <span className="text-xs font-medium text-foreground">Search</span>
-                <div className="relative mt-1.5">
-                  <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                  <input className="w-full rounded-lg border border-input bg-surface-elevated py-2.5 pl-9 pr-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/30" placeholder="Search the Exchange…" />
-                </div>
-              </label>
-              <label className="block">
-                <span className="text-xs font-medium text-foreground">Notes</span>
-                <textarea rows={3} className="mt-1.5 w-full resize-none rounded-lg border border-input bg-surface-elevated px-3 py-2.5 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/30" defaultValue="Reaction time threshold: 1500ms" />
-              </label>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-6 w-11 items-center rounded-full bg-primary p-0.5">
-                  <span className="h-5 w-5 translate-x-5 rounded-full bg-background shadow" />
-                </span>
-                <span className="text-sm text-foreground">Auto-save versions</span>
-              </div>
+      {/* ─── 06 PATTERNS · workbench preview ───────────────────────────── */}
+      <section id="s6" className="border-b-2 border-foreground">
+        <SectionHead n="06" name="Pattern · workbench" nameAr="نمط · ورشة العمل" abstract="A composite specimen showing the system at work — a single experiment view." />
+        <div className="grid grid-cols-12">
+          {/* sidebar */}
+          <aside className="col-span-12 border-r-2 border-foreground bg-foreground p-4 text-background md:col-span-3">
+            <div className="flex items-center gap-2">
+              <Mark inverse />
+              <div className="font-mono text-[10px] uppercase tracking-[0.22em]">workbench / lab-04</div>
             </div>
-          </div>
-
-          {/* Badges & alerts */}
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Badges</div>
-            <div className="mt-4 flex flex-wrap gap-2">
-              <Badge>Default</Badge>
-              <Badge tone="primary">Primary</Badge>
-              <Badge tone="accent">Verified</Badge>
-              <Badge tone="success"><CircleCheck size={11}/> Live</Badge>
-              <Badge tone="warning"><CircleAlert size={11}/> Draft</Badge>
-              <Badge tone="destructive">Archived</Badge>
-              <Badge tone="research"><Beaker size={11}/> Research</Badge>
-              <Badge tone="education"><GraduationCap size={11}/> Education</Badge>
-              <Badge tone="clinical"><Stethoscope size={11}/> Clinical</Badge>
-            </div>
-
-            <div className="mt-6 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Alerts</div>
-            <div className="mt-3 space-y-2">
-              <Alert icon={Info} tone="info" title="42 participants completed" body="Data is syncing to your warehouse." />
-              <Alert icon={CircleCheck} tone="success" title="HIPAA controls active" body="Patient data is encrypted at rest." />
-              <Alert icon={AlertTriangle} tone="warning" title="Offline mode" body="Responses will sync when reconnected." />
-              <Alert icon={X} tone="destructive" title="Validation failed" body="Trial 4 has an unreachable branch." />
-            </div>
-          </div>
-        </div>
-
-        {/* Cards / table snippet */}
-        <div className="mt-6 grid gap-6 lg:grid-cols-3">
-          <PersonaCard tone="research" icon={Beaker} title="Working Memory · N-Back" meta="12 collaborators · v3.4">
-            Real-time co-editing, code injection, full export.
-          </PersonaCard>
-          <PersonaCard tone="education" icon={GraduationCap} title="Stroop · Classroom" meta="One-click deploy">
-            Pre-built visualizations for class-wide results.
-          </PersonaCard>
-          <PersonaCard tone="clinical" icon={Stethoscope} title="PHQ-9 · Longitudinal" meta="HIPAA · GDPR">
-            Patient progress with one-click PDF reports.
-          </PersonaCard>
-        </div>
-      </Section>
-
-      {/* ── Bilingual ── */}
-      <Section id="bilingual" eyebrow="07 · Bilingual" title="English & Arabic" titleAr="الإنجليزيّة والعربيّة">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6">
-            <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Type pairing</div>
-            <div className="mt-5 space-y-5">
+            <div className="mt-6 space-y-1 font-mono text-[11px] uppercase tracking-[0.18em]">
               {[
-                { en: "Working Memory", ar: "الذاكرة العاملة" },
-                { en: "Reaction Time", ar: "زمن الاستجابة" },
-                { en: "Patient Assessment", ar: "تقييم المريض" },
-                { en: "Classroom Mode", ar: "وضع الفصل" },
-              ].map((r) => (
-                <div key={r.en} className="grid grid-cols-2 items-baseline gap-6 border-b border-border pb-4 last:border-0">
-                  <div className="font-display text-3xl font-light">{r.en}</div>
-                  <div dir="rtl" className="font-arabic text-3xl">{r.ar}</div>
+                ["▸ experiments", "12"],
+                ["• participants", "248"],
+                ["• stimuli", "1.4k"],
+                ["• datasets", "07"],
+                ["• exports", "—"],
+              ].map(([l, n]) => (
+                <div key={l} className="flex items-center justify-between border-b border-background/20 py-1.5">
+                  <span>{l}</span><span className="num-tab opacity-60">{n}</span>
                 </div>
               ))}
             </div>
-            <div className="mt-4 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              Fraunces · Inter ⇄ Noto Naskh Arabic
+            <div className="mt-6 border border-background/30 p-3">
+              <div className="text-[10px] uppercase tracking-[0.22em] opacity-60">storage</div>
+              <div className="mt-1 font-mono text-2xl num-tab">62%</div>
+              <div className="mt-2 h-1.5 w-full bg-background/20">
+                <div className="h-full bg-[var(--color-signal)]" style={{ width: "62%" }} />
+              </div>
             </div>
-          </div>
+          </aside>
 
-          <div className="grid gap-6">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Numerals</div>
-              <div className="mt-4 grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-xs text-muted-foreground">Latin · default</div>
-                  <div className="mt-1 font-display text-4xl">1,284 · 92.4%</div>
-                </div>
-                <div dir="rtl">
-                  <div className="font-arabic text-xs text-muted-foreground">عربيّة-هنديّة</div>
-                  <div className="mt-1 font-arabic text-4xl">١٬٢٨٤ · ٪٩٢٫٤</div>
-                </div>
+          {/* main */}
+          <main className="col-span-12 p-5 md:col-span-9">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b-2 border-foreground pb-3">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">EXP-024 · Stroop interference / Arabic vs Latin</div>
+                <h3 className="font-display text-2xl font-medium">Color–word congruence across scripts</h3>
               </div>
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Directionality · LTR ⇄ RTL</div>
-              <div className="mt-4 grid grid-cols-2 gap-4">
-                <div className="rounded-lg border border-border bg-surface p-4">
-                  <div className="flex items-center justify-between">
-                    <Beaker size={16} className="text-research" />
-                    <ChevronRight size={14} className="text-muted-foreground" />
-                  </div>
-                  <div className="mt-3 font-display text-base">N-Back Task</div>
-                  <div className="mt-1 text-xs text-muted-foreground">342 participants</div>
-                </div>
-                <div dir="rtl" className="rounded-lg border border-border bg-surface p-4">
-                  <div className="flex items-center justify-between">
-                    <Beaker size={16} className="text-research" />
-                    <ChevronRight size={14} className="rotate-180 text-muted-foreground" />
-                  </div>
-                  <div className="mt-3 font-arabic text-lg">مهمّة N-Back</div>
-                  <div className="mt-1 font-arabic text-xs text-muted-foreground">٣٤٢ مشاركًا</div>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Bilingual button</div>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"><Play size={14}/> Start study</button>
-                <button dir="rtl" className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-arabic text-sm font-medium text-primary-foreground"><Play size={14}/> ابدأ الدراسة</button>
-                <button className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-card px-4 py-2.5 text-sm font-medium"><Download size={14}/> Export</button>
-                <button dir="rtl" className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-card px-4 py-2.5 font-arabic text-sm font-medium"><Download size={14}/> تصدير</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── Patterns ── */}
-      <Section id="patterns" eyebrow="08 · Patterns" title="In context" titleAr="في السياق">
-        <div className="overflow-hidden rounded-3xl border border-border bg-surface shadow-lg">
-          <div className="grid md:grid-cols-[260px_1fr]">
-            {/* Sidebar */}
-            <aside className="border-r border-border bg-surface-elevated p-5">
               <div className="flex items-center gap-2">
-                <Logo small /> <span className="font-display text-lg">Biruni</span>
+                <Tag mode="signal">RUNNING</Tag>
+                <Tag mode="outline">N · 248</Tag>
+                <button className="border-2 border-foreground bg-foreground px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.22em] text-background">Export ↓</button>
               </div>
-              <div className="mt-6 space-y-1 text-sm">
-                {[
-                  { i: BarChart3, l: "Overview", a: true },
-                  { i: Beaker, l: "Experiments" },
-                  { i: BookOpen, l: "Exchange" },
-                  { i: Users, l: "Participants" },
-                  { i: Database, l: "Data" },
-                  { i: Settings, l: "Settings" },
-                ].map((it) => (
-                  <a key={it.l} className={`flex items-center gap-2.5 rounded-lg px-3 py-2 ${it.a ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-                    <it.i size={16} /> {it.l}
-                  </a>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-4">
+              {[
+                ["Mean RT", "487", "ms"],
+                ["Accuracy", "0.91", "ratio"],
+                ["Trials", "4,960", "n"],
+                ["Drop-out", "0.04", "ratio"],
+              ].map(([l, v, u]) => (
+                <div key={l} className="border-2 border-foreground p-3">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">{l}</div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    <div className="font-display text-3xl font-medium num-tab">{v}</div>
+                    <div className="font-mono text-[10px] text-muted-foreground">{u}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* fake bar chart */}
+            <div className="mt-4 border-2 border-foreground p-4">
+              <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em]">
+                <span>RT distribution · ms</span>
+                <span className="text-muted-foreground">bin = 50ms</span>
+              </div>
+              <div className="mt-3 flex h-32 items-end gap-1.5">
+                {[12, 18, 28, 44, 62, 78, 92, 88, 70, 52, 36, 22, 14, 9, 5].map((h, i) => (
+                  <div key={i} className="flex-1" style={{ height: `${h}%`, background: i === 6 ? SIGNAL : "var(--color-foreground)" }} />
                 ))}
               </div>
-              <div className="mt-8 rounded-xl bg-gradient-to-br from-accent/30 to-saffron-300/20 p-4">
-                <Sparkles size={16} className="text-saffron-700" />
-                <div className="mt-2 font-display text-base">Upgrade to Clinical</div>
-                <div className="text-xs text-muted-foreground">HIPAA workspace · patient CRM</div>
-              </div>
-            </aside>
-
-            {/* Main */}
-            <div className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Workspace · Dr. Aris Thorne</div>
-                  <h3 className="mt-1 font-display text-3xl">Studies overview</h3>
-                </div>
-                <div className="flex gap-2">
-                  <button className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground"><Bell size={15}/></button>
-                  <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"><Plus size={14}/> New</button>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3 md:grid-cols-3">
-                <Stat label="Active studies" value="14" delta="+3" />
-                <Stat label="Participants" value="1,284" delta="+162" />
-                <Stat label="Avg. completion" value="92.4%" delta="+1.8%" tone="success" />
-              </div>
-
-              <div className="mt-6 overflow-hidden rounded-xl border border-border">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/60 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-2.5 text-left">Study</th>
-                      <th className="px-4 py-2.5 text-left">Persona</th>
-                      <th className="px-4 py-2.5 text-left">Status</th>
-                      <th className="px-4 py-2.5 text-right">N</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { n: "N-Back · WM Capacity", p: "research", s: "Live", v: "342" },
-                      { n: "Stroop · Classroom S2", p: "education", s: "Draft", v: "—" },
-                      { n: "PHQ-9 · Cohort A", p: "clinical", s: "Live", v: "118" },
-                      { n: "Visual Search · Pilot", p: "research", s: "Paused", v: "27" },
-                    ].map((r) => (
-                      <tr key={r.n} className="border-t border-border">
-                        <td className="px-4 py-3 font-medium text-foreground">{r.n}</td>
-                        <td className="px-4 py-3"><Badge tone={r.p as any}>{r.p}</Badge></td>
-                        <td className="px-4 py-3 text-muted-foreground">{r.s}</td>
-                        <td className="px-4 py-3 text-right font-mono">{r.v}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="mt-2 flex justify-between font-mono text-[10px] num-tab text-muted-foreground">
+                <span>200</span><span>500</span><span>800</span><span>1100</span>
               </div>
             </div>
-          </div>
+          </main>
         </div>
+      </section>
 
-        {/* RTL mirror */}
-        <div className="mt-6 overflow-hidden rounded-3xl border border-border bg-surface shadow-lg" dir="rtl">
-          <div className="grid md:grid-cols-[260px_1fr]">
-            <aside className="border-l border-border bg-surface-elevated p-5">
+      {/* ─── 07 RTL ────────────────────────────────────────────────────── */}
+      <section id="s7" className="border-b-2 border-foreground">
+        <SectionHead n="07" name="Bilingual & RTL" nameAr="ثنائيّة اللغة" abstract="The grid mirrors. Numerals can switch between Latin and Arabic-Indic. Type pairs preserve x-height." />
+        <div className="grid grid-cols-12">
+          <div className="col-span-12 border-r-2 border-foreground p-5 md:col-span-6">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">LTR · default</div>
+            <div className="mt-3 flex items-center justify-between border-2 border-foreground p-3">
               <div className="flex items-center gap-2">
-                <Logo small /> <span className="font-arabic text-xl">بيروني</span>
+                <Beaker size={16} />
+                <span className="font-display text-sm font-medium">Stroop · v3.2</span>
               </div>
-              <div className="mt-6 space-y-1 text-sm">
-                {[
-                  { i: BarChart3, l: "نظرة عامّة", a: true },
-                  { i: Beaker, l: "التجارب" },
-                  { i: BookOpen, l: "المتجر" },
-                  { i: Users, l: "المشاركون" },
-                  { i: Database, l: "البيانات" },
-                  { i: Settings, l: "الإعدادات" },
-                ].map((it) => (
-                  <a key={it.l} className={`flex items-center gap-2.5 rounded-lg px-3 py-2 font-arabic text-base ${it.a ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}>
-                    <it.i size={16} /> {it.l}
-                  </a>
-                ))}
+              <span className="font-mono text-xs num-tab">042 / 100</span>
+              <button className="bg-foreground px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-background">Start</button>
+            </div>
+          </div>
+          <div dir="rtl" className="col-span-12 p-5 md:col-span-6">
+            <div className="font-arabic text-[12px] text-muted-foreground">من اليمين إلى اليسار · افتراضي</div>
+            <div className="mt-3 flex items-center justify-between border-2 border-foreground p-3">
+              <div className="flex items-center gap-2">
+                <Beaker size={16} />
+                <span className="font-arabic text-base font-semibold">ستروب · ٣٫٢</span>
               </div>
-              <div className="mt-8 rounded-xl bg-gradient-to-bl from-accent/30 to-saffron-300/20 p-4">
-                <Sparkles size={16} className="text-saffron-700" />
-                <div className="mt-2 font-arabic text-base">ترقية إلى العيادة</div>
-                <div className="font-arabic text-xs text-muted-foreground">مساحة عمل متوافقة · إدارة المرضى</div>
-              </div>
-            </aside>
-
-            <div className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">مساحة العمل · د. أريس ثورن</div>
-                  <h3 className="mt-1 font-arabic text-3xl">نظرة عامّة على الدراسات</h3>
-                </div>
-                <div className="flex gap-2">
-                  <button className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground"><Bell size={15}/></button>
-                  <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-3 py-2 font-arabic text-sm font-medium text-primary-foreground"><Plus size={14}/> جديد</button>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3 md:grid-cols-3">
-                <StatAr label="الدراسات النشطة" value="١٤" delta="+٣" />
-                <StatAr label="المشاركون" value="١٬٢٨٤" delta="+١٦٢" />
-                <StatAr label="متوسّط الإكمال" value="٪٩٢٫٤" delta="+١٫٨٪" tone="success" />
-              </div>
-
-              <div className="mt-6 overflow-hidden rounded-xl border border-border">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/60 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الدراسة</th>
-                      <th className="px-4 py-2.5 text-right font-arabic text-xs">التخصّص</th>
-                      <th className="px-4 py-2.5 text-right font-arabic text-xs">الحالة</th>
-                      <th className="px-4 py-2.5 text-left font-arabic text-xs">العدد</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { n: "N-Back · سعة الذاكرة", p: "research", pAr: "بحث", s: "نشط", v: "٣٤٢" },
-                      { n: "Stroop · فصل ٢", p: "education", pAr: "تعليم", s: "مسوّدة", v: "—" },
-                      { n: "PHQ-9 · مجموعة أ", p: "clinical", pAr: "عيادة", s: "نشط", v: "١١٨" },
-                      { n: "البحث البصري · تجريبي", p: "research", pAr: "بحث", s: "متوقّف", v: "٢٧" },
-                    ].map((r) => (
-                      <tr key={r.n} className="border-t border-border">
-                        <td className="px-4 py-3 font-arabic text-base font-medium text-foreground">{r.n}</td>
-                        <td className="px-4 py-3"><Badge tone={r.p as any}>{r.pAr}</Badge></td>
-                        <td className="px-4 py-3 font-arabic text-muted-foreground">{r.s}</td>
-                        <td className="px-4 py-3 text-left font-arabic">{r.v}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <span className="font-arabic text-sm num-tab">٠٤٢ / ١٠٠</span>
+              <button className="bg-foreground px-3 py-1 font-arabic text-[12px] text-background">ابدأ</button>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* ── Footer ── */}
-      <footer className="border-t border-border py-12">
-        <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 md:flex-row md:items-center">
-          <div className="flex items-center gap-3">
-            <Logo />
-            <div>
-              <div className="font-display text-base">Biruni Design System</div>
-              <div className="font-mono text-[11px] text-muted-foreground">© 2026 · بيروني · v1.0.0</div>
+      {/* ─── Colophon ──────────────────────────────────────────────────── */}
+      <footer className="border-foreground bg-foreground text-background">
+        <div className="grid grid-cols-12">
+          <div className="col-span-12 border-r border-background/30 p-6 md:col-span-5">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] opacity-60">Colophon</div>
+            <div className="mt-2 font-display text-3xl font-medium leading-tight">
+              Set in Space Grotesk, JetBrains Mono, and IBM Plex Sans Arabic. Built as a workbench, not a brand book.
             </div>
           </div>
-          <div className="font-mono text-[11px] text-muted-foreground">
-            Crafted in OKLCH · Light & Dark · LTR & RTL
+          <div className="col-span-6 border-r border-background/30 p-6 md:col-span-3">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] opacity-60">Reference</div>
+            <ul className="mt-2 space-y-1 font-mono text-[12px]">
+              <li>↳ DS-001 / v1.0.0</li>
+              <li>↳ tokens · 142</li>
+              <li>↳ components · 38</li>
+              <li>↳ WCAG · AA</li>
+            </ul>
+          </div>
+          <div className="col-span-6 p-6 md:col-span-4">
+            <div className="font-mono text-[10px] uppercase tracking-[0.22em] opacity-60">Filed</div>
+            <div className="mt-2 font-display text-2xl">Riyadh · Beirut · Cairo</div>
+            <div dir="rtl" className="font-arabic text-lg opacity-80">الرياض · بيروت · القاهرة</div>
+            <div className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] opacity-60">© 2026 BIRUNI</div>
           </div>
         </div>
       </footer>
+
+      {/* keyframes for ticker */}
+      <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
     </div>
   );
 }
 
-/* ── Building blocks ── */
+/* ── Sub-components ───────────────────────────────────────────────────── */
 
-function Logo({ small = false }: { small?: boolean }) {
-  const s = small ? 28 : 40;
+function SectionHead({ n, name, nameAr, abstract }: { n: string; name: string; nameAr: string; abstract: string }) {
   return (
-    <svg width={s} height={s} viewBox="0 0 40 40" className="text-foreground">
-      <rect x="0.5" y="0.5" width="39" height="39" fill="none" stroke="currentColor" strokeWidth="1" />
-      <g transform="translate(20 20)" stroke="currentColor" strokeWidth="1" fill="none">
-        <rect x="-12" y="-12" width="24" height="24" />
-        <rect x="-12" y="-12" width="24" height="24" transform="rotate(45)" />
-        <circle r="5" fill="var(--color-accent)" stroke="none" />
-      </g>
+    <div className="grid grid-cols-12 border-b-2 border-foreground">
+      <div className="col-span-3 flex items-center justify-center border-r-2 border-foreground bg-foreground p-4 text-background md:col-span-2">
+        <div className="font-display text-6xl font-bold leading-none num-tab md:text-8xl">{n}</div>
+      </div>
+      <div className="col-span-9 flex flex-col justify-center p-4 md:col-span-7">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">— Section —</div>
+        <div className="font-display text-3xl font-medium leading-tight md:text-4xl">{name}</div>
+        <div dir="rtl" className="font-arabic text-xl text-muted-foreground">{nameAr}</div>
+      </div>
+      <div className="col-span-12 border-t-2 border-foreground p-4 md:col-span-3 md:border-l-2 md:border-t-0">
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">Abstract</div>
+        <p className="mt-1 text-[12px] leading-[1.6]">{abstract}</p>
+      </div>
+    </div>
+  );
+}
+
+function TypeRow({ tag, spec, weight, children }: { tag: string; spec: string; weight?: string; children: React.ReactNode }) {
+  const sizeClass = tag.startsWith("DISPLAY") ? "text-7xl md:text-9xl"
+    : tag.startsWith("H1") ? "text-5xl"
+    : tag.startsWith("H2") ? "text-3xl"
+    : tag.startsWith("LEAD") ? "text-xl"
+    : tag.startsWith("ARABIC") ? "text-2xl"
+    : tag.startsWith("MONO") ? "text-xs"
+    : "text-base";
+  return (
+    <div className="grid grid-cols-[120px_1fr] items-baseline gap-4 border-b border-foreground/20 py-4">
+      <div>
+        <Tag mode="outline">{tag}</Tag>
+        <div className="mt-1 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">{spec}</div>
+      </div>
+      <div className={`${sizeClass} ${weight ?? "font-medium"} leading-[1.05] tracking-[-0.02em]`}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function Mark({ inverse = false }: { inverse?: boolean }) {
+  const c = inverse ? "var(--color-background)" : "var(--color-foreground)";
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32">
+      <rect x="0" y="0" width="32" height="32" fill={c} />
+      <rect x="6" y="6" width="20" height="20" fill={SIGNAL} />
+      <rect x="12" y="12" width="8" height="8" fill={c} />
     </svg>
-  );
-}
-
-function Ornament() {
-  // Eight-pointed star (khatam) — minimal MENA geometry
-  return (
-    <svg viewBox="0 0 200 200" className="mx-auto block w-full max-w-[220px] text-foreground">
-      <g fill="none" stroke="currentColor" strokeWidth="0.8">
-        <circle cx="100" cy="100" r="92" />
-        <circle cx="100" cy="100" r="68" />
-        <circle cx="100" cy="100" r="34" strokeWidth="0.6" />
-        <g transform="translate(100 100)">
-          <rect x="-72" y="-72" width="144" height="144" />
-          <rect x="-72" y="-72" width="144" height="144" transform="rotate(45)" />
-          <rect x="-48" y="-48" width="96" height="96" />
-          <rect x="-48" y="-48" width="96" height="96" transform="rotate(45)" />
-        </g>
-        {Array.from({ length: 16 }).map((_, i) => (
-          <line
-            key={i}
-            x1="100"
-            y1="100"
-            x2={100 + 92 * Math.cos((i * Math.PI) / 8)}
-            y2={100 + 92 * Math.sin((i * Math.PI) / 8)}
-            strokeWidth="0.4"
-          />
-        ))}
-      </g>
-      <circle cx="100" cy="100" r="6" fill="var(--color-accent)" />
-    </svg>
-  );
-}
-
-
-function Badge({ children, tone = "default" }: { children: React.ReactNode; tone?: "default"|"primary"|"accent"|"success"|"warning"|"destructive"|"research"|"education"|"clinical" }) {
-  const map: Record<string,string> = {
-    default: "bg-muted text-foreground border-border",
-    primary: "bg-primary/10 text-primary border-primary/20",
-    accent: "bg-accent/20 text-saffron-700 border-accent/30",
-    success: "bg-success/15 text-success border-success/30",
-    warning: "bg-warning/25 text-warning-foreground border-warning/40",
-    destructive: "bg-destructive/10 text-destructive border-destructive/30",
-    research: "bg-research/15 text-research border-research/30",
-    education: "bg-education/25 text-education-foreground border-education/40",
-    clinical: "bg-clinical/15 text-clinical border-clinical/30",
-  };
-  return (
-    <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-medium capitalize ${map[tone]}`}>
-      {children}
-    </span>
-  );
-}
-
-function Alert({ icon: Icon, tone, title, body }: { icon: any; tone: "info"|"success"|"warning"|"destructive"; title: string; body: string }) {
-  const map: Record<string,string> = {
-    info: "bg-info/10 text-info border-info/25",
-    success: "bg-success/10 text-success border-success/25",
-    warning: "bg-warning/15 text-warning-foreground border-warning/30",
-    destructive: "bg-destructive/10 text-destructive border-destructive/25",
-  };
-  return (
-    <div className={`flex items-start gap-3 rounded-lg border px-3 py-2.5 ${map[tone]}`}>
-      <Icon size={16} className="mt-0.5 shrink-0" />
-      <div className="text-sm">
-        <div className="font-medium">{title}</div>
-        <div className="opacity-80">{body}</div>
-      </div>
-    </div>
-  );
-}
-
-function PersonaCard({ tone, icon: Icon, title, meta, children }: { tone: "research"|"education"|"clinical"; icon: any; title: string; meta: string; children: React.ReactNode }) {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-      <div className="flex items-center justify-between p-5" style={{ background: `color-mix(in oklab, var(--${tone}) 12%, transparent)` }}>
-        <div className="grid h-9 w-9 place-items-center rounded-lg" style={{ background: `var(--${tone})`, color: `var(--${tone}-foreground)` }}>
-          <Icon size={16} />
-        </div>
-        <Badge tone={tone}>{tone}</Badge>
-      </div>
-      <div className="p-5">
-        <h4 className="font-display text-xl">{title}</h4>
-        <p className="mt-1.5 text-sm text-muted-foreground">{children}</p>
-        <div className="mt-4 flex items-center justify-between border-t border-border pt-3 font-mono text-[11px] text-muted-foreground">
-          <span>{meta}</span>
-          <ChevronRight size={14} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value, delta, tone }: { label: string; value: string; delta: string; tone?: "success" }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{label}</div>
-      <div className="mt-2 flex items-baseline justify-between">
-        <div className="font-display text-3xl font-medium">{value}</div>
-        <div className={`font-mono text-xs ${tone === "success" ? "text-success" : "text-muted-foreground"}`}>{delta}</div>
-      </div>
-    </div>
-  );
-}
-
-function StatAr({ label, value, delta, tone }: { label: string; value: string; delta: string; tone?: "success" }) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-4">
-      <div className="font-arabic text-xs text-muted-foreground">{label}</div>
-      <div className="mt-2 flex items-baseline justify-between">
-        <div className="font-arabic text-3xl font-medium">{value}</div>
-        <div className={`font-arabic text-xs ${tone === "success" ? "text-success" : "text-muted-foreground"}`}>{delta}</div>
-      </div>
-    </div>
   );
 }
